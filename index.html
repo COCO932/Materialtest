@@ -65,6 +65,17 @@
     .qty-row input[type="number"] { width:90px; }
     ul.summary { padding-left:18px; }
   </style>
+  <!-- EmailJS: direktes Versenden -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  // Deine persönlichen EmailJS-Werte
+  const EMAILJS_SERVICE_ID  = "service_qwz9qbt";
+  const EMAILJS_TEMPLATE_ID = "template_i6hs68v";
+  const EMAILJS_PUBLIC_KEY  = "ea8CHyfL3ZcO48AfE";
+  (function() {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  })();
+</script>
 </head>
 <body>
   <div class="app">
@@ -865,16 +876,44 @@
   }
 
   function sendOrder(){
-    const lang=getLang();
-    const subject=(lang==="fr"?"Commande de matériel ":"Materialbestellung ")+
-      (state.zug?state.zug+" – ":"")+(state.besteller||"");
-    const body=encodeURIComponent(buildMailBody());
-    const mailto="mailto:flt.ffz.bttr@gmail.com?subject="+encodeURIComponent(subject)+"&body="+body;
-    window.location.href=mailto;
-    sendInfo.textContent=lang==="fr"
-      ?"Un brouillon d'e-mail a été ouvert vers flt.ffz.bttr@gmail.com."
-      :"E-Mail-Entwurf an flt.ffz.bttr@gmail.com wurde geöffnet.";
-  }
+  const lang = getLang();
+  const subject =
+    (lang === "fr" ? "Commande de matériel " : "Materialbestellung ") +
+    (state.zug ? state.zug + " – " : "") +
+    (state.besteller || "");
+
+  const bodyText = buildMailBody(); // DE + FR Text
+
+  const templateParams = {
+    subject: subject,
+    message: bodyText,
+    besteller: state.besteller,
+    zug: state.zug,
+    sprache_app:
+      state.language === "fr" ? "Französisch / Français" : "Deutsch / Allemand"
+  };
+
+  sendInfo.style.color = "#555";
+  sendInfo.textContent =
+    lang === "fr" ? "Envoi en cours…" : "Bestellung wird versendet…";
+
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+    .then(function () {
+      sendInfo.style.color = "#060";
+      sendInfo.textContent =
+        lang === "fr"
+          ? "Commande envoyée avec succès."
+          : "Bestellung wurde erfolgreich versendet.";
+    })
+    .catch(function (error) {
+      console.error("EmailJS error:", error);
+      sendInfo.style.color = "#c00";
+      sendInfo.textContent =
+        lang === "fr"
+          ? "Erreur lors de l'envoi. Veuillez réessayer ou contacter le fourrier."
+          : "Fehler beim Versenden. Bitte erneut versuchen oder den Fourier kontaktieren.";
+    });
+}
 
   // DOM-Shortcuts
   const languageEl=document.getElementById("language");
