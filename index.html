@@ -4,87 +4,268 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Materialbestellung</title>
+
   <style>
+    :root {
+      --bg-main: #f0f2f5;
+      --bg-card: #ffffff;
+      --border-card: #d0d4da;
+      --accent-dark: #1f2a2c;
+      --accent-main: #2f4f39;
+      --accent-light: #d7dbe0;
+      --text-main: #111111;
+      --text-muted: #555555;
+      --error: #b02020;
+    }
+
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       margin: 0;
-      background: #f5f5f5;
+      background: var(--bg-main);
+      color: var(--text-main);
     }
+
     .app {
-      max-width: 640px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 16px 16px 32px;
+      padding: 0 16px 32px;
     }
-    h1 { font-size: 1.4rem; margin-bottom: 8px; }
-    h2, h3 { margin-top: 0; }
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      margin-top: 16px;
-    }
-    label { display:block; font-size:0.85rem; margin-bottom:4px; }
-    input, select {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 0.95rem;
+
+    h1 {
+      font-size: 1.4rem;
+      margin: 0 -16px 12px;
+      padding: 12px 16px;
+      background: var(--accent-dark);
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       box-sizing: border-box;
     }
-    input[type="password"] { letter-spacing: 0.12em; }
+
+    h1 .version {
+      font-size: 0.75rem;
+      font-weight: 400;
+      opacity: 0.85;
+    }
+
+    h2 {
+      font-size: 1.05rem;
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    h3 {
+      font-size: 0.9rem;
+      margin: 12px 0 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: 4px;
+      padding: 16px;
+      border: 1px solid var(--border-card);
+      margin-top: 12px;
+      box-shadow: none;
+    }
+
+    label {
+      display:block;
+      font-size:0.8rem;
+      margin-bottom:3px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 3px;
+      border: 1px solid #c0c4cc;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+      background: #ffffff;
+    }
+
+    input:focus, select:focus {
+      outline: 1px solid var(--accent-main);
+      border-color: var(--accent-main);
+    }
+
+    input[type="password"] {
+      letter-spacing: 0.12em;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 3px;
+      border: 1px solid #c0c4cc;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+      background: #ffffff;
+      resize: vertical;
+    }
+
     .button-row {
       display:flex;
       gap:8px;
       margin-top:12px;
     }
+
     button {
       flex:1;
-      padding:10px 14px;
+      padding:9px 14px;
       border-radius:999px;
       border:none;
       font-size:0.95rem;
       cursor:pointer;
+      font-weight:500;
     }
-    button.primary { background:#000; color:#fff; }
-    button.secondary { background:#eee; }
-    .error { color:#c00; font-size:0.8rem; margin-top:4px; white-space:pre-wrap; }
+
+    button.primary {
+      background: var(--accent-main);
+      color:#fff;
+    }
+
+    button.primary:hover {
+      filter: brightness(1.05);
+    }
+
+    button.secondary {
+      background: var(--accent-light);
+      color:#111;
+    }
+
+    button.secondary:hover {
+      filter: brightness(0.97);
+    }
+
+    .error {
+      color: var(--error);
+      font-size:0.8rem;
+      margin-top:4px;
+      white-space:pre-wrap;
+    }
+
     .step-indicator {
-      display:flex; gap:4px; margin-bottom:16px;
+      display:flex;
+      gap:4px;
+      margin-bottom:12px;
+      margin-top:4px;
     }
-    .step-dot { flex:1; height:4px; background:#ddd; border-radius:999px; }
-    .step-dot.active { background:#000; }
-    .category { border-top:1px solid #eee; padding-top:12px; margin-top:12px; }
-    .category-header { display:flex; justify-content:space-between; cursor:pointer; }
-    .category-title { font-weight:600; }
-    .subcategories { margin-top:8px; display:none; }
-    .subcategories.open { display:block; }
-    .qty-row { display:flex; justify-content:space-between; gap:8px; margin-bottom:8px; align-items:center; }
-    .qty-row span { flex:1; }
-    .qty-row input[type="number"] { width:90px; }
-    ul.summary { padding-left:18px; }
+
+    .step-dot {
+      flex:1;
+      height:4px;
+      background:#c2c7cf;
+      border-radius:999px;
+    }
+
+    .step-dot.active {
+      background: var(--accent-main);
+    }
+
+    .category {
+      border-top:1px solid #e0e3ea;
+      padding-top:10px;
+      margin-top:10px;
+    }
+
+    .category-header {
+      display:flex;
+      justify-content:space-between;
+      cursor:pointer;
+      align-items:center;
+    }
+
+    .category-title {
+      font-weight:600;
+      font-size:0.9rem;
+      text-transform: uppercase;
+      letter-spacing:0.04em;
+    }
+
+    .subcategories {
+      margin-top:6px;
+      display:none;
+    }
+
+    .subcategories.open {
+      display:block;
+    }
+
+    .qty-row {
+      display:grid;
+      grid-template-columns: 3fr 0.9fr;
+      gap:8px;
+      margin-bottom:4px;
+      align-items:center;
+    }
+
+    .qty-row span {
+      font-size:0.85rem;
+    }
+
+    .qty-row input[type="number"] {
+      width:100%;
+      text-align:right;
+      padding-right:6px;
+    }
+
+    ul.summary {
+      padding-left:18px;
+      margin-top:4px;
+    }
+
+    ul.summary > li {
+      margin-bottom:4px;
+    }
+
+    @media (max-width:480px) {
+      h1 {
+        font-size:1.2rem;
+        flex-direction:column;
+        align-items:flex-start;
+        gap:2px;
+      }
+      h1 .version {
+        align-self:flex-end;
+      }
+    }
   </style>
+
   <!-- EmailJS: direktes Versenden -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script>
-  // Deine persönlichen EmailJS-Werte
-  const EMAILJS_SERVICE_ID  = "service_qwz9qbt";
-  const EMAILJS_TEMPLATE_ID = "template_i6hs68v";
-  const EMAILJS_PUBLIC_KEY  = "ea8CHyfL3ZcO48AfE";
-  (function() {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
-  })();
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    // Deine persönlichen EmailJS-Werte
+    const EMAILJS_SERVICE_ID  = "service_qwz9qbt";
+    const EMAILJS_TEMPLATE_ID = "template_i6hs68v";
+    const EMAILJS_PUBLIC_KEY  = "ea8CHyfL3ZcO48AfE";
+    (function() {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    })();
+  </script>
 </head>
 <body>
   <div class="app">
-    <h1>Materialbestellung</h1>
+    <h1>
+      Flt Bttr FFZ – Materialbestellung
+      <span class="version">Version 1.2</span>
+    </h1>
 
     <!-- LOGIN -->
     <div id="loginCard" class="card">
       <h2>Anmeldung</h2>
-      <p style="font-size:0.9rem;">Diese Seite ist geschützt. Bitte Passwort eingeben.</p>
+      <p style="font-size:0.9rem;color:#555;">
+        Diese Seite ist geschützt. Bitte Passwort eingeben.
+      </p>
       <div class="field">
         <label for="pwInput">Passwort</label>
         <input id="pwInput" type="password" autocomplete="current-password">
@@ -108,12 +289,14 @@
 
       <div id="step1" class="card">
         <h2>1. Grunddaten / Données de base</h2>
-        <p style="font-size:0.8rem;color:#555;">
-          Regeln: Bestellungen, Abholung und Rückgabe nur Montag–Freitag.
-          Abholung mind. +25 h nach Bestelldatum.
-          Bestellungen für Montag nur bis Donnerstag 17:00 der Vorwoche.
+        <p style="font-size:0.8rem;color:#555;border-left:3px solid #2f4f39;padding-left:8px;">
+          Regeln / Règles:<br>
+          – Bestellungen, Abholung und Rückgabe nur Montag–Freitag.<br>
+          – Abholung mindestens 25 h nach Bestelldatum (Zeitpunkt der Freigabe).<br>
+          – Abholung am Montag nur möglich, wenn Bestellung bis Donnerstag 17:00 der Vorwoche erfolgt ist.
         </p>
 
+        <h3>Personalien</h3>
         <div class="field">
           <label for="language">Sprache / Langue</label>
           <select id="language">
@@ -141,9 +324,13 @@
           </select>
         </div>
 
+        <h3>Zeitliche Vorgaben</h3>
         <div class="field">
-          <label for="bestelldatum">Bestelldatum &amp; Zeit / Date et heure de la demande</label>
-          <input id="bestelldatum" type="datetime-local">
+          <label for="bestelldatum">
+            Bestelldatum &amp; Zeit / Date et heure de la demande
+            (wird automatisch gesetzt)
+          </label>
+          <input id="bestelldatum" type="datetime-local" readonly>
         </div>
 
         <div class="field">
@@ -176,6 +363,12 @@
       <div id="step3" class="card" style="display:none;">
         <h2 id="step3Title">3. Zusammenfassung / Récapitulatif</h2>
         <div id="summaryContent"></div>
+
+        <div class="field" style="margin-top:12px;">
+          <label for="remarks">Bemerkungen / Remarques</label>
+          <textarea id="remarks" rows="3" placeholder="Zusätzliche Informationen / Informations complémentaires"></textarea>
+        </div>
+
         <div class="button-row">
           <button class="secondary" onclick="goToStep(2)">Zurück / Retour</button>
           <button class="primary" onclick="sendOrder()">Senden / Envoyer</button>
@@ -641,7 +834,8 @@
     bestelldatum: "",
     abholung: "",
     rueckgabe: "",
-    items: []
+    items: [],
+    remarks: ""
   };
 
   function isWeekend(date) {
@@ -663,18 +857,13 @@
 
   function initDates(){
     const now=new Date();
-    const bestelldatum=new Date(now.getTime());
-    if(isWeekend(bestelldatum)){
-      while(isWeekend(bestelldatum)) bestelldatum.setDate(bestelldatum.getDate()+1);
-      bestelldatum.setHours(8,0,0,0);
-    }
-    const abholung=new Date(bestelldatum.getTime()+26*3600*1000);
-    const rueckgabe=new Date(bestelldatum.getTime()+50*3600*1000);
+    const abholung=new Date(now.getTime()+26*3600*1000);
+    const rueckgabe=new Date(now.getTime()+50*3600*1000);
     while(isWeekend(abholung)) abholung.setDate(abholung.getDate()+1);
     while(isWeekend(rueckgabe)) rueckgabe.setDate(rueckgabe.getDate()+1);
-    bestelldatumEl.value=toLocalInputValue(bestelldatum);
     abholungEl.value=toLocalInputValue(abholung);
     rueckgabeEl.value=toLocalInputValue(rueckgabe);
+    bestelldatumEl.value = "";
   }
 
   function updateStepIndicator(step){
@@ -694,29 +883,52 @@
     const language=languageEl.value;
     const best=besteller.value.trim();
     const zug=zugEl.value;
-    const bVal=bestelldatumEl.value;
     const aVal=abholungEl.value;
     const rVal=rueckgabeEl.value;
-    if(!language||!best||!zug||!bVal||!aVal||!rVal){
-      step1Error.textContent="Bitte Sprache, Besteller, Zug und alle Datumsfelder ausfüllen.";
+
+    if(!language||!best||!zug||!aVal||!rVal){
+      step1Error.textContent="Bitte Sprache, Besteller, Zug sowie Abholung und Rückgabe ausfüllen.";
       return;
     }
-    const b=new Date(bVal), a=new Date(aVal), r=new Date(rVal);
-    if(isWeekend(b)){step1Error.textContent="Keine Bestellungen Sa/So.";return;}
-    if(isWeekend(a)||isWeekend(r)){step1Error.textContent="Abholung/Rückgabe nur Mo–Fr.";return;}
-    if(a-b<25*3600*1000){step1Error.textContent="Abholung mind. +25 h nach Bestelldatum.";return;}
-    if(r<a){step1Error.textContent="Rückgabe muss nach Abholung liegen.";return;}
+
+    const now = new Date();
+    const b = now; // Bestelldatum = aktueller Zeitpunkt
+    const a = new Date(aVal);
+    const r = new Date(rVal);
+
+    if(isWeekend(b)){
+      step1Error.textContent="Keine Bestellungen Sa/So.";
+      return;
+    }
+    if(isWeekend(a)||isWeekend(r)){
+      step1Error.textContent="Abholung/Rückgabe nur Mo–Fr.";
+      return;
+    }
+    if(a-b<25*3600*1000){
+      step1Error.textContent="Abholung mind. +25 h nach Bestelldatum.";
+      return;
+    }
+    if(r<a){
+      step1Error.textContent="Rückgabe muss nach Abholung liegen.";
+      return;
+    }
     if(isMonday(a)){
       const deadline=mondayOrderDeadline(a);
-      if(b>deadline){step1Error.textContent="Montag nur bestellbar bis Do 17:00 der Vorwoche.";return;}
+      if(b>deadline){
+        step1Error.textContent="Montag nur bestellbar bis Do 17:00 der Vorwoche.";
+        return;
+      }
     }
 
     state.language=language;
     state.besteller=best;
     state.zug=zug;
-    state.bestelldatum=bVal;
+    state.bestelldatum=b.toISOString();
     state.abholung=aVal;
     state.rueckgabe=rVal;
+
+    bestelldatumEl.value = toLocalInputValue(b);
+
     renderCategories();
     updateTextByLanguage();
     goToStep(2);
@@ -834,6 +1046,16 @@
       html+="</ul></li>";
     });
     html+="</ul>";
+
+    if (state.remarks && state.remarks.trim() !== "") {
+      const safeRemarks = state.remarks
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;");
+      html += `<h3>Bemerkungen / Remarques</h3>`;
+      html += `<p>${safeRemarks}</p>`;
+    }
+
     summaryContent.innerHTML=html;
     sendInfo.textContent="";
   }
@@ -843,10 +1065,17 @@
     // Kopf zweisprachig
     body += "Besteller / Demandeur: " + state.besteller + "\n";
     body += "Zug / Section: " + state.zug + "\n";
-    body += "Sprache in der App / Langue dans l'application: " + (state.language==="fr"?"Französisch / Français":"Deutsch / Allemand") + "\n";
+    body += "Sprache in der App / Langue dans l'application: " +
+      (state.language==="fr"?"Französisch / Français":"Deutsch / Allemand") + "\n";
     body += "Bestelldatum / Date de la demande: " + formatDateTime(state.bestelldatum) + "\n";
     body += "Abholung / Retrait: " + formatDateTime(state.abholung) + "\n";
-    body += "Rückgabe / Retour: " + formatDateTime(state.rueckgabe) + "\n\n";
+    body += "Rückgabe / Retour: " + formatDateTime(state.rueckgabe) + "\n";
+
+    if (state.remarks && state.remarks.trim() !== "") {
+      body += "\nBemerkungen / Remarques:\n" + state.remarks + "\n";
+    }
+
+    body += "\n";
 
     // Block Deutsch
     body += "Material (Deutsch):\n";
@@ -876,44 +1105,46 @@
   }
 
   function sendOrder(){
-  const lang = getLang();
-  const subject =
-    (lang === "fr" ? "Commande de matériel " : "Materialbestellung ") +
-    (state.zug ? state.zug + " – " : "") +
-    (state.besteller || "");
+    const lang = getLang();
+    state.remarks = remarksEl.value.trim();
 
-  const bodyText = buildMailBody(); // DE + FR Text
+    const subject =
+      (lang === "fr" ? "Commande de matériel " : "Materialbestellung ") +
+      (state.zug ? state.zug + " – " : "") +
+      (state.besteller || "");
 
-  const templateParams = {
-    subject: subject,
-    message: bodyText,
-    besteller: state.besteller,
-    zug: state.zug,
-    sprache_app:
-      state.language === "fr" ? "Französisch / Français" : "Deutsch / Allemand"
-  };
+    const bodyText = buildMailBody(); // DE + FR Text
 
-  sendInfo.style.color = "#555";
-  sendInfo.textContent =
-    lang === "fr" ? "Envoi en cours…" : "Bestellung wird versendet…";
+    const templateParams = {
+      subject: subject,
+      message: bodyText,
+      besteller: state.besteller,
+      zug: state.zug,
+      sprache_app:
+        state.language === "fr" ? "Französisch / Français" : "Deutsch / Allemand"
+    };
 
-  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-    .then(function () {
-      sendInfo.style.color = "#060";
-      sendInfo.textContent =
-        lang === "fr"
-          ? "Commande envoyée avec succès."
-          : "Bestellung wurde erfolgreich versendet.";
-    })
-    .catch(function (error) {
-      console.error("EmailJS error:", error);
-      sendInfo.style.color = "#c00";
-      sendInfo.textContent =
-        lang === "fr"
-          ? "Erreur lors de l'envoi. Veuillez réessayer ou contacter le fourrier."
-          : "Fehler beim Versenden. Bitte erneut versuchen oder den Fourier kontaktieren.";
-    });
-}
+    sendInfo.style.color = "#555";
+    sendInfo.textContent =
+      lang === "fr" ? "Envoi en cours…" : "Bestellung wird versendet…";
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+      .then(function () {
+        sendInfo.style.color = "#060";
+        sendInfo.textContent =
+          lang === "fr"
+            ? "Commande envoyée avec succès."
+            : "Bestellung wurde erfolgreich versendet.";
+      })
+      .catch(function (error) {
+        console.error("EmailJS error:", error);
+        sendInfo.style.color = "#c00";
+        sendInfo.textContent =
+          lang === "fr"
+            ? "Erreur lors de l'envoi. Veuillez réessayer ou contacter le fourrier."
+            : "Fehler beim Versenden. Bitte erneut versuchen oder den Fourier kontaktieren.";
+      });
+  }
 
   // DOM-Shortcuts
   const languageEl=document.getElementById("language");
@@ -932,6 +1163,7 @@
   const step1=document.getElementById("step1");
   const step2=document.getElementById("step2");
   const step3=document.getElementById("step3");
+  const remarksEl=document.getElementById("remarks");
 
   window.addEventListener("load", initDates);
 </script>
