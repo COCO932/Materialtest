@@ -7,7 +7,7 @@
 
   <style>
     :root {
-      /* Farben im „militärischen“ Stil */
+      /* Militärischer Look */
       --shell-bg: #cfd3b8;
       --shell-border: #89906f;
       --shell-shadow: rgba(0,0,0,0.18);
@@ -53,7 +53,7 @@
       padding: 0 14px 18px;
     }
 
-    /* Kopfzeile wie auf der Vorlage */
+    /* Kopfzeile */
     h1 {
       margin: 0;
       padding: 10px 16px;
@@ -71,7 +71,7 @@
       font-weight: 500;
     }
 
-    /* Step-Balken oben */
+    /* Step-Balken */
     .step-indicator {
       display: flex;
       gap: 4px;
@@ -89,7 +89,6 @@
       background: var(--step-active);
     }
 
-    /* Bereichstitel wie in deiner Vorlage („1. Grunddaten…“) */
     .card {
       margin-top: 14px;
       background: transparent;
@@ -117,9 +116,9 @@
     }
 
     label {
-      display: block;
-      font-size: 0.78rem;
-      margin-bottom: 3px;
+      display:block;
+      font-size:0.78rem;
+      margin-bottom:3px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       color: var(--text-muted);
@@ -142,7 +141,7 @@
     }
 
     input[readonly] {
-      opacity: 0.85;
+      opacity: 0.9;
       background: #ece9d4;
     }
 
@@ -432,11 +431,421 @@
   }
 
   // ===== App-Logik =====
-  const categories = [/* deine Kategorien – unverändert wie vorher */  
-  /* --- ich lasse sie hier weg, du kannst exakt deinen bisherigen Kategorien-Block
-         aus der aktuellen Datei einsetzen. Der Rest vom Skript funktioniert damit
-         unverändert. --- */
-  ];
+  const categories = [
+  {
+    "key": "stgw_90",
+    "label": {
+      "de": "Stgw 90",
+      "fr": "Fass 90"
+    },
+    "subs": [
+      {
+        "key": "standard_kd_box_1x_schiessfahne_komplett_1x_magazintasche_5x_ausschusszelt",
+        "label": {
+          "de": "Standard KD-Box: 1x Schiessfahne komplett, 1x Magazintasche, 5x Ausschusszelt",
+          "fr": "Box courte distance standard: 1x drapeau de tir complet, 1x saccoche magazin, 5x toiles de rebut"
+        }
+      },
+      {
+        "key": "standard_gef_s_2x_schiessfahne_komplett_2x_magazintasche_1x_rak_pist_10x_ausschusszelt_3x_l_rmsprechgarnituren_komplett_3x_se_135_komplett_1x_anp_1x_fg_235_1x_sanit_tsbahre_1x_wolldecke_1x_verbandsmaterial_6x_aa_batterien",
+        "label": {
+          "de": "Standard Gef S (2x Schiessfahne komplett, 2x Magazintasche, 1x Rak-Pist, 10x Ausschusszelt, 3x Lärmsprechgarnituren komplett, 3x SE-135 komplett, 1x ANP, 1x FG-235, 1x Sanitätsbahre, 1x Wolldecke, 1x Verbandsmaterial, 6x AA Batterien",
+          "fr": "Tir de combat standard: 2x drapeau de tir, 2x saccoche magazin, 1x lance fusées, 10x toiles de rebut, 3x ganiture contre le bruit complet, 3x SE-135 complet,1x ANP, 1x FG-235,1x brancard sanitaire, 1x couverture de laine, 1x matériel de pensement, 6x batterie AA"
+        }
+      },
+      {
+        "key": "manipats_5_6mm",
+        "label": {
+          "de": "Manipats\n5.6mm",
+          "fr": "Manipats\n5.6mm"
+        }
+      },
+      {
+        "key": "zugsparkdienstkiste",
+        "label": {
+          "de": "Zugsparkdienstkiste",
+          "fr": "Caisse de service de parc"
+        }
+      },
+      {
+        "key": "magazintasche_18_st_ck",
+        "label": {
+          "de": "Magazintasche à 18 Stück",
+          "fr": "Saccoche à magazin à 18 pièces"
+        }
+      }
+    ]
+  },
+  {
+    "key": "mg_64",
+    "label": {
+      "de": "MG 64",
+      "fr": "Mitr 64"
+    },
+    "subs": [
+      {
+        "key": "mg_64_12_7mm_3_beinlaffette_lehren_und_reinigungsmaterial_2_verschl_sse",
+        "label": {
+          "de": "MG 64 12.7mm: 3-Beinlaffette, Lehren- und Reinigungsmaterial, 2 Verschlüsse",
+          "fr": "Mitr 64 12.7mm: Affut 3-pied, jauges et matériel de nettoyage, 2 culasses"
+        }
+      },
+      {
+        "key": "manipats_12_7mm_kiste_100",
+        "label": {
+          "de": "Manipats 12.7mm (Kiste à 100)",
+          "fr": "Manipats 12.7mm (caisse à 100)"
+        }
+      },
+      {
+        "key": "gurt_entgurtungsapparat",
+        "label": {
+          "de": "Gurt- entgurtungsapparat",
+          "fr": "Appareil a garnir et a dégarnir"
+        }
+      }
+    ]
+  },
+  {
+    "key": "funk",
+    "label": {
+      "de": "Funk",
+      "fr": "Radio"
+    },
+    "subs": [
+      {
+        "key": "se_235_tragbar_3x_akku_se_235_tragversion",
+        "label": {
+          "de": "SE-235 tragbar: 3x Akku, SE-235, Tragversion",
+          "fr": "SE-235 portable: 3x accu, SE-235, cacolet"
+        }
+      },
+      {
+        "key": "se_135_3x_akku_se_135_1x_b_ndel_lang_1x_b_ndel_kurz_1x_tasche_1x_antenne",
+        "label": {
+          "de": "SE-135: 3x Akku, SE-135, 1x Bändel lang, 1x Bändel kurz, 1x Tasche, 1x Antenne",
+          "fr": "SE-135 portable: 3x accu, SE-135, 1x bretelle longue, 1x bretelle courte, 1x saccoche, 1x antenne"
+        }
+      },
+      {
+        "key": "adressnetzplan_flt_bttr_blau",
+        "label": {
+          "de": "Adressnetzplan Flt Bttr (blau)",
+          "fr": "Plan de reseaux Bttr DF (bleu)"
+        }
+      },
+      {
+        "key": "adressnetzplan_ffz_bttr_weiss",
+        "label": {
+          "de": "Adressnetzplan FFZ Bttr (weiss)",
+          "fr": "Plan de reseaux Bttr CCF (blanc)"
+        }
+      },
+      {
+        "key": "fill_gun_se_x35",
+        "label": {
+          "de": "Fill-Gun SE-X35",
+          "fr": "Fill-Gun SE-X35"
+        }
+      },
+      {
+        "key": "lautsprecher_tragbar",
+        "label": {
+          "de": "Lautsprecher tragbar",
+          "fr": "Haut-parleur portable"
+        }
+      },
+      {
+        "key": "fernantenne_geroh_1x_antenne_1x_tasche_und_bobine",
+        "label": {
+          "de": "Fernantenne \"GEROH\": 1x Antenne, 1x Tasche und Bobine",
+          "fr": "Antenne \"GEROH\": 1x antenne, 1x saccoche et bobine"
+        }
+      },
+      {
+        "key": "fernantenne_t_inkl_1x_tasche",
+        "label": {
+          "de": "Fernantenne \"t\" (inkl 1x Tasche)",
+          "fr": "Antenne \"t\" (inclus 1x saccoche)"
+        }
+      },
+      {
+        "key": "feldtelefon_kiste_7_ftf_90_gabelstange_bobine_mit_fk80_bobine_leer_14x_aa_batterien",
+        "label": {
+          "de": "Feldtelefon: Kiste à 7 Ftf 90, Gabelstange, Bobine mit FK80, Bobine leer, 14x AA Batterien",
+          "fr": "Téléphone de camp: caisse à 7 tc 90, perche à fourche, bobine avec cable 80, bobine vide, 14x batterie AA"
+        }
+      },
+      {
+        "key": "messger_t_t_02",
+        "label": {
+          "de": "Messgerät T-02",
+          "fr": "Appareil de mésure T-02"
+        }
+      },
+      {
+        "key": "akkumulatorenladeger_t_algt_96",
+        "label": {
+          "de": "Akkumulatorenladegerät (ALGT-96)",
+          "fr": "Chargeur d'accumulateur (ALGT-93)"
+        }
+      },
+      {
+        "key": "fba_235_inkl_1_bobine_feldkabel_gabelstange_1x_bautasche",
+        "label": {
+          "de": "FBA-235 (inkl 1 Bobine Feldkabel, Gabelstange, 1x Bautasche)",
+          "fr": "FBA-235 (inclus 1 bobine cable de campagne, perche à fourche, 1x saccoche de construction)"
+        }
+      },
+      {
+        "key": "kabelverbindungszange",
+        "label": {
+          "de": "Kabelverbindungszange",
+          "fr": "Pince à epissures"
+        }
+      },
+      {
+        "key": "bautasche",
+        "label": {
+          "de": "Bautasche",
+          "fr": "Saccoche de construction"
+        }
+      },
+      {
+        "key": "linientasche",
+        "label": {
+          "de": "Linientasche",
+          "fr": "Saccoche de ligne"
+        }
+      }
+    ]
+  },
+  {
+    "key": "sanit_tsdienst",
+    "label": {
+      "de": "Sanitätsdienst",
+      "fr": "Service sanitaire"
+    },
+    "subs": [
+      {
+        "key": "sanit_tsbahre",
+        "label": {
+          "de": "Sanitätsbahre",
+          "fr": "Brancard sanitaire"
+        }
+      },
+      {
+        "key": "verbandsmaterial",
+        "label": {
+          "de": "Verbandsmaterial",
+          "fr": "Materiel de pensement"
+        }
+      },
+      {
+        "key": "hemostage_ausr_stung_1_kiste",
+        "label": {
+          "de": "Hemostage Ausrüstung (1 Kiste)",
+          "fr": "Équipement hemostase (1 caisse)"
+        }
+      },
+      {
+        "key": "wolldecke",
+        "label": {
+          "de": "Wolldecke",
+          "fr": "Couverture de laine"
+        }
+      }
+    ]
+  },
+  {
+    "key": "abc",
+    "label": {
+      "de": "ABC",
+      "fr": "NBC"
+    },
+    "subs": [
+      {
+        "key": "reinigungsmaterial_zu_sm90",
+        "label": {
+          "de": "Reinigungsmaterial zu SM90",
+          "fr": "Materiel de nettoyage pour MP90"
+        }
+      },
+      {
+        "key": "reinigungsmittel_1_flasche",
+        "label": {
+          "de": "Reinigungsmittel (1 flasche)",
+          "fr": "Liquide de nettoyage (1 bouteille)"
+        }
+      }
+    ]
+  },
+  {
+    "key": "allgemein",
+    "label": {
+      "de": "Allgemein",
+      "fr": "Général"
+    },
+    "subs": [
+      {
+        "key": "schlaghammer_5kg",
+        "label": {
+          "de": "Schlaghammer 5Kg",
+          "fr": "Masse 5Kg"
+        }
+      },
+      {
+        "key": "locheisen",
+        "label": {
+          "de": "Locheisen",
+          "fr": "Barre à mine"
+        }
+      },
+      {
+        "key": "pickel",
+        "label": {
+          "de": "Pickel",
+          "fr": "Pioche"
+        }
+      },
+      {
+        "key": "schaufel",
+        "label": {
+          "de": "Schaufel",
+          "fr": "Pelle"
+        }
+      },
+      {
+        "key": "markierungsfahne_set_6",
+        "label": {
+          "de": "Markierungsfahne (Set à 6)",
+          "fr": "Fanions de marquage (set de 6)"
+        }
+      },
+      {
+        "key": "wassersack_inkl_innensack",
+        "label": {
+          "de": "Wassersack (inkl Innensack)",
+          "fr": "Sac à eau (inclus sac intérieur)"
+        }
+      },
+      {
+        "key": "tarnnetz_gr_sse_je_nach_verf_gbarkeit",
+        "label": {
+          "de": "Tarnnetz (Grösse je nach Verfügbarkeit)",
+          "fr": "Filet de camouflage (taille selon disponibilité)"
+        }
+      },
+      {
+        "key": "handschellen",
+        "label": {
+          "de": "Handschellen",
+          "fr": "Menottes"
+        }
+      },
+      {
+        "key": "beil",
+        "label": {
+          "de": "Beil",
+          "fr": "Hache"
+        }
+      },
+      {
+        "key": "nahkampsausr_stung_1x_sack_1x_kissen_1x_stock",
+        "label": {
+          "de": "Nahkampsausrüstung (1x Sack, 1x Kissen, 1x Stock)",
+          "fr": "Moyens de contraine (1x saccoche, 1x coussin, 1x batôn)"
+        }
+      },
+      {
+        "key": "ausschusszelt",
+        "label": {
+          "de": "Ausschusszelt",
+          "fr": "Toile de rebut"
+        }
+      },
+      {
+        "key": "sitometer",
+        "label": {
+          "de": "Sitometer",
+          "fr": "Sitomètre"
+        }
+      },
+      {
+        "key": "bussole",
+        "label": {
+          "de": "Bussole",
+          "fr": "Boussole"
+        }
+      },
+      {
+        "key": "kabelbinder",
+        "label": {
+          "de": "Kabelbinder",
+          "fr": "Attaches jetables"
+        }
+      },
+      {
+        "key": "trassierband_gr_n",
+        "label": {
+          "de": "Trassierband grün",
+          "fr": "Bande de minage vert"
+        }
+      },
+      {
+        "key": "trassierband_weiss",
+        "label": {
+          "de": "Trassierband weiss",
+          "fr": "Bande de minage blanc"
+        }
+      },
+      {
+        "key": "trassierband_rot_weiss",
+        "label": {
+          "de": "Trassierband rot/weiss",
+          "fr": "Bande de minage rouge/blanc"
+        }
+      }
+    ]
+  },
+  {
+    "key": "beobachten",
+    "label": {
+      "de": "Beobachten",
+      "fr": "Observer"
+    },
+    "subs": [
+      {
+        "key": "feldstecher",
+        "label": {
+          "de": "Feldstecher",
+          "fr": "Jumelles"
+        }
+      },
+      {
+        "key": "rlv_brille_in_kiste",
+        "label": {
+          "de": "RLV Brille in Kiste",
+          "fr": "ILR lunettes dans caisse"
+        }
+      },
+      {
+        "key": "rlv_3x",
+        "label": {
+          "de": "RLV 3x",
+          "fr": "ILR 3x"
+        }
+      },
+      {
+        "key": "rak_pistole_pistolet",
+        "label": {
+          "de": "Rak-Pistole\nPistolet",
+          "fr": "Lancefusées"
+        }
+      }
+    ]
+  }
+];
 
   const state = {
     language: "",
@@ -598,7 +1007,7 @@
       step2Error.textContent=lang==="fr"
         ?"Veuillez sélectionner au moins une sous-catégorie avec une quantité."
         :"Bitte mindestens eine Unterkategorie mit Menge auswählen.";
-    return;
+      return;
     }
     state.items=items;
     buildSummary();
