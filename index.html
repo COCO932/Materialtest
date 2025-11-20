@@ -7,252 +7,310 @@
 
   <style>
     :root {
-      /* Militärischer Look */
-      --shell-bg: #cfd3b8;
-      --shell-border: #89906f;
-      --shell-shadow: rgba(0,0,0,0.18);
-      --header-bg: #3b4b2f;
-      --header-text: #fdfdf8;
-      --stepbar-bg: #66784a;
-      --stepbar-text: #fdfdf8;
-
-      --field-bg: #f4f2dd;
-      --field-border: #a5aa8b;
-      --field-border-focus: #6f7c55;
-
-      --text-main: #141515;
-      --text-muted: #4e5440;
+      --bg-main: #454e3f;
+      --bg-card: #d3d7c7;
+      --bg-card-inner: #e2e5d7;
+      --header-dark: #1f2b1f;
+      --header-mid: #405832;
+      --progress-bg: #c0c5b4;
+      --progress-active: #2f4f39;
+      --text-main: #111;
+      --text-muted: #444;
       --error: #b02020;
-      --btn-main: #2f4f39;
-      --btn-main-text: #ffffff;
-      --btn-secondary-bg: #dde1c7;
-      --btn-secondary-text: #222;
-      --step-inactive: #aeb49b;
-      --step-active: #2f4f39;
+      --btn-primary: #21442f;
+      --btn-primary-text: #fff;
+      --btn-secondary: #e3e7d9;
+      --btn-secondary-text: #111;
+      --input-border: #b1b7a7;
+      --input-bg: #f5f6ec;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       margin: 0;
-      padding: 12px;
-      background: radial-gradient(circle at top, #9ea586 0, #565c46 55%, #282d22 100%);
+      background: radial-gradient(circle at top, #606a54, #2f3430);
       color: var(--text-main);
     }
 
-    .shell {
-      max-width: 760px;
+    .app {
+      max-width: 820px;
       margin: 0 auto;
-      background: var(--shell-bg);
-      border-radius: 14px;
-      border: 1px solid var(--shell-border);
-      box-shadow: 0 12px 26px var(--shell-shadow);
+      padding: 12px 8px 32px;
+    }
+
+    .shell {
+      background: var(--bg-card);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+      border: 1px solid rgba(0,0,0,0.35);
+    }
+
+    /* HEADER */
+
+    .app-header {
+      background: var(--header-dark);
+      color: #ffffff;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .app-title {
+      font-size: 1.2rem;
+      font-weight: 650;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .app-version {
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    .step-bar {
+      height: 6px;
+      background: var(--progress-bg);
+      display: flex;
+    }
+
+    .step-segment {
+      flex: 1;
+      margin: 0 3px;
+      border-radius: 999px;
+      background: var(--progress-bg);
       overflow: hidden;
     }
 
-    .app-inner {
-      padding: 0 14px 18px;
+    .step-segment-inner {
+      width: 0%;
+      height: 100%;
+      background: var(--progress-active);
+      transition: width 0.25s ease;
     }
 
-    /* Kopfzeile */
-    h1 {
-      margin: 0;
+    .step-segment.active .step-segment-inner {
+      width: 100%;
+    }
+
+    .step-segment:first-child { margin-left: 8px; }
+    .step-segment:last-child { margin-right: 8px; }
+
+    .step-header {
+      background: var(--header-mid);
+      color: #fff;
       padding: 10px 16px;
-      background: var(--header-bg);
-      color: var(--header-text);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 1.3rem;
-      letter-spacing: 0.03em;
-    }
-    h1 span.version {
-      font-size: 0.8rem;
-      opacity: 0.9;
-      font-weight: 500;
-    }
-
-    /* Step-Balken */
-    .step-indicator {
-      display: flex;
-      gap: 4px;
-      padding: 6px 16px 8px;
-      background: #b9bea0;
-      border-bottom: 1px solid rgba(0,0,0,0.1);
-    }
-    .step-dot {
-      flex: 1;
-      height: 4px;
-      border-radius: 999px;
-      background: var(--step-inactive);
-    }
-    .step-dot.active {
-      background: var(--step-active);
-    }
-
-    .card {
-      margin-top: 14px;
-      background: transparent;
-    }
-    .card-header {
-      margin: 0 -14px 8px;
-      padding: 8px 16px;
-      background: var(--stepbar-bg);
-      color: var(--stepbar-text);
       font-size: 1.05rem;
       font-weight: 600;
     }
 
-    h3 {
-      font-size: 0.92rem;
-      margin: 12px 0 4px;
-      font-weight: 600;
+    /* CONTENT CARD */
+
+    .card {
+      padding: 16px;
+      background: var(--bg-card-inner);
+      font-size: 0.95rem;
     }
 
-    p.rules {
-      font-size: 0.8rem;
+    h2 {
+      font-size: 1.05rem;
+      margin: 0 0 10px;
+    }
+
+    h3 {
+      font-size: 0.9rem;
+      margin: 14px 0 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       color: var(--text-muted);
-      margin: 6px 0 4px;
-      line-height: 1.4;
+    }
+
+    p {
+      margin: 4px 0;
     }
 
     label {
-      display:block;
-      font-size:0.78rem;
-      margin-bottom:3px;
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 3px;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       color: var(--text-muted);
     }
 
-    input, select {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid var(--field-border);
-      font-size: 0.96rem;
-      box-sizing: border-box;
-      background: var(--field-bg);
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--field-border-focus);
-      box-shadow: 0 0 0 1px var(--field-border-focus);
-    }
-
-    input[readonly] {
-      opacity: 0.9;
-      background: #ece9d4;
-    }
-
+    input,
+    select,
     textarea {
       width: 100%;
       padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid var(--field-border);
-      font-size: 0.96rem;
-      box-sizing: border-box;
-      background: var(--field-bg);
+      border-radius: 6px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      font-size: 0.95rem;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: 1px solid var(--header-mid);
+      border-color: var(--header-mid);
+    }
+
+    input[readonly] {
+      opacity: 0.8;
+    }
+
+    input[type="password"] {
+      letter-spacing: 0.15em;
+    }
+
+    textarea {
       resize: vertical;
       min-height: 70px;
     }
 
+    .rules-box {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-radius: 8px;
+      background: rgba(0,0,0,0.03);
+      padding: 8px 10px;
+      border-left: 3px solid var(--header-mid);
+      margin-bottom: 8px;
+    }
+
+    .rules-box strong {
+      color: var(--text-main);
+    }
+
     .field {
-      margin-top: 8px;
+      margin-bottom: 8px;
     }
-
-    .button-row {
-      display:flex;
-      gap:8px;
-      margin-top:14px;
-    }
-
-    button {
-      flex:1;
-      padding:10px 14px;
-      border-radius:999px;
-      border:none;
-      font-size:0.95rem;
-      cursor:pointer;
-      font-weight:500;
-    }
-
-    button.primary {
-      background: var(--btn-main);
-      color:var(--btn-main-text);
-    }
-    button.primary:hover { filter: brightness(1.05); }
-
-    button.secondary {
-      background: var(--btn-secondary-bg);
-      color:var(--btn-secondary-text);
-    }
-    button.secondary:hover { filter: brightness(0.97); }
 
     .error {
       color: var(--error);
-      font-size:0.8rem;
-      margin-top:4px;
-      white-space:pre-wrap;
+      font-size: 0.8rem;
+      margin-top: 4px;
+      white-space: pre-wrap;
     }
 
-    /* Kategorien / Materialliste */
+    /* Buttons */
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.12s ease;
+    }
+
+    button.primary {
+      background: var(--btn-primary);
+      color: var(--btn-primary-text);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    }
+
+    button.secondary {
+      background: var(--btn-secondary);
+      color: var(--btn-secondary-text);
+    }
+
+    button:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+      filter: brightness(0.98);
+    }
+
+    /* Kategorien */
+
     .category {
-      border-top:1px solid rgba(0,0,0,0.12);
-      padding-top:10px;
-      margin-top:10px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.4);
+      border: 1px solid rgba(0,0,0,0.05);
+      margin-bottom: 8px;
+      overflow: hidden;
     }
 
     .category-header {
-      display:flex;
-      justify-content:space-between;
-      cursor:pointer;
-      align-items:center;
+      padding: 8px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      background: rgba(0,0,0,0.03);
     }
 
     .category-title {
-      font-weight:600;
-      font-size:0.9rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .category-toggle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
     }
 
     .subcategories {
-      margin-top:6px;
-      display:none;
+      padding: 8px 10px 8px;
+      display: none;
     }
 
     .subcategories.open {
-      display:block;
+      display: block;
     }
 
     .qty-row {
-      display:grid;
-      grid-template-columns: 3fr 0.9fr;
-      gap:8px;
-      margin-bottom:4px;
-      align-items:center;
-    }
-
-    .qty-row span {
-      font-size:0.85rem;
+      display: grid;
+      grid-template-columns: 3fr 0.8fr;
+      gap: 6px;
+      margin-bottom: 4px;
+      align-items: center;
+      font-size: 0.85rem;
     }
 
     .qty-row input[type="number"] {
-      width:100%;
-      text-align:right;
+      text-align: right;
+      padding-right: 6px;
     }
 
     ul.summary {
-      padding-left:18px;
-      margin-top:4px;
-    }
-    ul.summary > li {
-      margin-bottom:4px;
+      padding-left: 18px;
+      margin-top: 6px;
     }
 
-    @media (max-width:600px) {
-      body { padding: 8px; }
-      h1 { font-size: 1.05rem; flex-wrap: wrap; row-gap: 4px; }
-      h1 span.version { margin-left:auto; }
+    ul.summary li {
+      margin-bottom: 3px;
+    }
+
+    @media (max-width: 640px) {
+      .app {
+        padding: 8px 4px 28px;
+      }
+      .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+      }
+      .app-version {
+        align-self: flex-end;
+      }
+      .button-row {
+        flex-direction: column;
+      }
     }
   </style>
 
@@ -262,150 +320,161 @@
     const EMAILJS_SERVICE_ID  = "service_qwz9qbt";
     const EMAILJS_TEMPLATE_ID = "template_i6hs68v";
     const EMAILJS_PUBLIC_KEY  = "ea8CHyfL3ZcO48AfE";
-    (function() { emailjs.init(EMAILJS_PUBLIC_KEY); })();
+    (function () {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    })();
   </script>
 </head>
 <body>
-  <div class="shell">
-    <h1>
-      Flt Bttr FFZ – Materialbestellung
-      <span class="version">1.2</span>
-    </h1>
+  <div class="app">
+    <div class="shell">
+      <div class="app-header">
+        <div class="app-title">Flt Bttr FFZ – Materialbestellung</div>
+        <div class="app-version">1.2</div>
+      </div>
 
-    <div class="step-indicator">
-      <div class="step-dot active" data-step="1"></div>
-      <div class="step-dot" data-step="2"></div>
-      <div class="step-dot" data-step="3"></div>
-    </div>
+      <div class="step-bar">
+        <div class="step-segment" data-step="1"><div class="step-segment-inner"></div></div>
+        <div class="step-segment" data-step="2"><div class="step-segment-inner"></div></div>
+        <div class="step-segment" data-step="3"><div class="step-segment-inner"></div></div>
+      </div>
 
-    <div class="app-inner">
       <!-- LOGIN -->
-      <div id="loginCard" class="card">
-        <div class="card-header">Anmeldung</div>
-        <p class="rules">
-          Diese Seite ist geschützt. Bitte Passwort eingeben.
-        </p>
-        <div class="field">
-          <label for="pwInput">Passwort</label>
-          <input id="pwInput" type="password" autocomplete="current-password">
+      <div id="loginCard">
+        <div class="step-header">Anmeldung</div>
+        <div class="card">
+          <p>Diese Seite ist geschützt. Bitte Passwort eingeben.</p>
+          <div class="field">
+            <label for="pwInput">Passwort</label>
+            <input id="pwInput" type="password" autocomplete="current-password">
+          </div>
+          <div id="loginError" class="error"></div>
+          <div class="button-row">
+            <button class="primary" onclick="handleLogin()">Login</button>
+          </div>
+          <p style="font-size:0.75rem;color:#555;margin-top:8px;">
+            Hinweis: Das Passwort wird im Browser als SHA-256 Hash geprüft, nicht im Klartext gespeichert.
+          </p>
         </div>
-        <div id="loginError" class="error"></div>
-        <div class="button-row">
-          <button class="primary" onclick="handleLogin()">Login</button>
-        </div>
-        <p style="font-size:0.75rem;color:#555;margin-top:10px;">
-          Hinweis: Das Passwort wird im Browser als SHA-256-Hash geprüft, nicht im Klartext gespeichert.
-        </p>
       </div>
 
       <!-- APP -->
       <div id="appCard" style="display:none;">
         <!-- STEP 1 -->
-        <div id="step1" class="card">
-          <div class="card-header">1. Grunddaten / Données de base</div>
+        <div id="step1Wrapper">
+          <div class="step-header">1. Grunddaten / Données de base</div>
+          <div id="step1" class="card">
+            <div class="rules-box">
+              <strong>Regeln / Règles:</strong><br>
+              – Bestellungen, Abholung und Rückgabe nur Montag–Freitag.<br>
+              – Abholung mindestens 25 h nach Bestelldatum (Zeitpunkt der Freigabe).<br>
+              – Abholung am Montag nur möglich, wenn Bestellung bis Donnerstag 17:00 der Vorwoche erfolgt ist.
+            </div>
 
-          <p class="rules">
-            <strong>Regeln / Règles:</strong><br>
-            – Bestellungen, Abholung und Rückgabe nur Montag–Freitag.<br>
-            – Abholung mindestens 25 h nach Bestelldatum (Zeitpunkt der Freigabe).<br>
-            – Abholung am Montag nur möglich, wenn Bestellung bis Donnerstag 17:00 der Vorwoche erfolgt ist.
-          </p>
+            <h3>Personalien</h3>
 
-          <h3>Personalien</h3>
-          <div class="field">
-            <label for="language">Sprache / Langue</label>
-            <select id="language">
-              <option value="">Bitte wählen / Veuillez choisir</option>
-              <option value="de">Deutsch</option>
-              <option value="fr">Français</option>
-            </select>
-          </div>
+            <div class="field">
+              <label for="language">Sprache / Langue</label>
+              <select id="language">
+                <option value="">Bitte wählen / Veuillez choisir</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Français</option>
+              </select>
+            </div>
 
-          <div class="field">
-            <label for="besteller">Besteller / Demandeur</label>
-            <input id="besteller" type="text" placeholder="Name / Nom, Funktion / Fonction">
-          </div>
+            <div class="field">
+              <label for="besteller">Besteller / Demandeur</label>
+              <input id="besteller" type="text" placeholder="Name / Nom, Funktion / Fonction">
+            </div>
 
-          <div class="field">
-            <label for="zug">Zug / Section</label>
-            <select id="zug">
-              <option value="">Bitte wählen / Veuillez choisir</option>
-              <option value="C1">C1</option>
-              <option value="M113">M113</option>
-              <option value="KDO">KDO</option>
-              <option value="UEM 1">UEM 1</option>
-              <option value="UEM 2">UEM 2</option>
-              <option value="WETTER">WETTER</option>
-            </select>
-          </div>
+            <div class="field">
+              <label for="zug">Zug / Section</label>
+              <select id="zug">
+                <option value="">Bitte wählen / Veuillez choisir</option>
+                <option value="C1">C1</option>
+                <option value="M113">M113</option>
+                <option value="KDO">KDO</option>
+                <option value="UEM 1">UEM 1</option>
+                <option value="UEM 2">UEM 2</option>
+                <option value="WETTER">WETTER</option>
+              </select>
+            </div>
 
-          <h3>Zeitliche Vorgaben</h3>
-          <div class="field">
-            <label for="bestelldatum">
-              Bestelldatum &amp; Zeit / Date et heure de la demande (wird automatisch gesetzt)
-            </label>
-            <input id="bestelldatum" type="datetime-local" readonly>
-          </div>
+            <h3>Zeitliche Vorgaben</h3>
 
-          <div class="field">
-            <label for="abholung">Abholung (Mo–Fr, min. +25 h) / Retrait (lu–ve, min. +25 h)</label>
-            <input id="abholung" type="datetime-local">
-          </div>
+            <div class="field">
+              <label for="bestelldatum">
+                Bestelldatum &amp; Zeit / Date et heure de la demande
+                (wird automatisch gesetzt)
+              </label>
+              <input id="bestelldatum" type="datetime-local" readonly>
+            </div>
 
-          <div class="field">
-            <label for="rueckgabe">Rückgabe (Mo–Fr) / Retour (lu–ve)</label>
-            <input id="rueckgabe" type="datetime-local">
-          </div>
+            <div class="field">
+              <label for="abholung">Abholung (Mo–Fr, min. +25 h) / Retrait (lu–ve, min. +25 h)</label>
+              <input id="abholung" type="datetime-local">
+            </div>
 
-          <div id="step1Error" class="error"></div>
-          <div class="button-row">
-            <button class="primary" onclick="nextStep1()">Weiter / Suivant</button>
+            <div class="field">
+              <label for="rueckgabe">Rückgabe (Mo–Fr) / Retour (lu–ve)</label>
+              <input id="rueckgabe" type="datetime-local">
+            </div>
+
+            <div id="step1Error" class="error"></div>
+            <div class="button-row">
+              <button class="primary" onclick="nextStep1()">Weiter / Suivant</button>
+            </div>
           </div>
         </div>
 
         <!-- STEP 2 -->
-        <div id="step2" class="card" style="display:none;">
-          <div class="card-header" id="step2Title">2. Material</div>
-          <p id="step2Intro" class="rules">
-            Wähle die benötigten Materialkategorien und gib die Menge an.
-          </p>
-          <div id="categories"></div>
-          <div id="step2Error" class="error"></div>
-          <div class="button-row">
-            <button class="secondary" onclick="goToStep(1)">Zurück / Retour</button>
-            <button class="primary" onclick="nextStep2()">Weiter / Suivant</button>
+        <div id="step2Wrapper" style="display:none;">
+          <div class="step-header" id="step2TitleBar">2. Material</div>
+          <div id="step2" class="card">
+            <p id="step2Intro">
+              Wähle die benötigten Materialkategorien und gib die Menge an.
+            </p>
+            <div id="categories"></div>
+            <div id="step2Error" class="error"></div>
+            <div class="button-row">
+              <button class="secondary" onclick="goToStep(1)">Zurück / Retour</button>
+              <button class="primary" onclick="nextStep2()">Weiter / Suivant</button>
+            </div>
           </div>
         </div>
 
         <!-- STEP 3 -->
-        <div id="step3" class="card" style="display:none;">
-          <div class="card-header" id="step3Title">3. Zusammenfassung / Récapitulatif</div>
-          <div id="summaryContent"></div>
+        <div id="step3Wrapper" style="display:none;">
+          <div class="step-header" id="step3TitleBar">3. Zusammenfassung / Récapitulatif</div>
+          <div id="step3" class="card">
+            <div id="summaryContent"></div>
 
-          <div class="field" style="margin-top:12px;">
-            <label for="remarks">Bemerkungen / Remarques</label>
-            <textarea id="remarks" rows="3"
-              placeholder="Zusätzliche Informationen / Informations complémentaires"></textarea>
-          </div>
+            <div class="field" style="margin-top:12px;">
+              <label for="remarks">Bemerkungen / Remarques</label>
+              <textarea id="remarks" rows="3"
+                placeholder="Zusätzliche Informationen / Informations complémentaires"></textarea>
+            </div>
 
-          <div class="button-row">
-            <button class="secondary" onclick="goToStep(2)">Zurück / Retour</button>
-            <button class="primary" onclick="sendOrder()">Senden / Envoyer</button>
+            <div class="button-row">
+              <button class="secondary" onclick="goToStep(2)">Zurück / Retour</button>
+              <button class="primary" onclick="sendOrder()">Senden / Envoyer</button>
+            </div>
+            <div id="sendInfo" class="error" style="color:#060;"></div>
           </div>
-          <div id="sendInfo" class="error" style="color:#060;"></div>
         </div>
       </div>
     </div>
   </div>
 
 <script>
-  // ===== Passwort-Logik (Variante B: gehashter Vergleich) =====
+  // ===== PASSWORT-LOGIK =====
   const PASSWORD_HASH = "d8b1390eb24e12b5dac0cc98cc9fa5cbc12bfffb9e0659172a5a3296ef8f1f4e";
 
   async function sha256(str) {
     const enc = new TextEncoder().encode(str);
     const buf = await crypto.subtle.digest("SHA-256", enc);
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+    return Array.from(new Uint8Array(buf))
+      .map(b => b.toString(16).padStart(2,"0")).join("");
   }
 
   async function handleLogin() {
@@ -422,6 +491,7 @@
       if (hash === PASSWORD_HASH) {
         document.getElementById("loginCard").style.display = "none";
         document.getElementById("appCard").style.display = "block";
+        updateStepIndicator(1);
       } else {
         errorEl.textContent = "Passwort falsch.";
       }
@@ -430,11 +500,241 @@
     }
   }
 
-  // ===== Daten & Helper =====
+  // ===== MATERIAL-KATEGORIEN =====
   const categories = [
-    /* --- hier unverändert alle Kategorien wie bisher (Stgw90, MG64, Funk, usw.) --- */
-    /* Ich habe sie der Länge wegen gekürzt. Du kannst deine bisherige categories-Definition
-       1:1 hier einfügen – die Logik darunter funktioniert damit. */
+    {
+      key: "stgw_90",
+      label: { de: "Stgw 90", fr: "Fass 90" },
+      subs: [
+        {
+          key: "standard_kd_box",
+          label: {
+            de: "Standard KD-Box: 1x Schiessfahne komplett, 1x Magazintasche, 5x Ausschusszelt",
+            fr: "Box courte distance standard: 1x drapeau de tir complet, 1x saccoche magasin, 5x toiles de rebut"
+          }
+        },
+        {
+          key: "standard_gef_s",
+          label: {
+            de: "Standard Gef S: 2x Schiessfahne komplett, 2x Magazintasche, 1x Rak-Pist, 10x Ausschusszelt, 3x Lärmsprechgarnituren komplett, 3x SE-135 komplett, 1x ANP, 1x FG-235, 1x Sanitätsbahre, 1x Wolldecke, 1x Verbandsmaterial, 6x AA Batterien",
+            fr: "Tir de combat standard: 2x drapeaux de tir, 2x saccoche magasin, 1x lance-fusées, 10x toiles de rebut, 3x garnitures contre le bruit complètes, 3x SE-135 complets, 1x ANP, 1x FG-235, 1x brancard sanitaire, 1x couverture de laine, 1x matériel de pansement, 6x piles AA"
+          }
+        },
+        {
+          key: "manipats_5_6",
+          label: { de: "Manipats 5.6mm", fr: "Manipats 5.6mm" }
+        },
+        {
+          key: "zugsparkdienstkiste",
+          label: { de: "Zugsparkdienstkiste", fr: "Caisse de service de parc" }
+        },
+        {
+          key: "magazintasche_18",
+          label: { de: "Magazintasche à 18 Stück", fr: "Saccoche à magasin à 18 pièces" }
+        }
+      ]
+    },
+    {
+      key: "mg_64",
+      label: { de: "MG 64", fr: "Mitr 64" },
+      subs: [
+        {
+          key: "mg_64_ausruestung",
+          label: {
+            de: "MG 64 12.7mm: 3-Beinlafette, Lehren- und Reinigungsmaterial, 2 Verschlüsse",
+            fr: "Mitr 64 12.7mm: affût 3-pieds, jauges et matériel de nettoyage, 2 culasses"
+          }
+        },
+        {
+          key: "manipats_12_7",
+          label: { de: "Manipats 12.7mm (Kiste à 100)", fr: "Manipats 12.7mm (caisse à 100)" }
+        },
+        {
+          key: "gurt_entgurtungsapparat",
+          label: { de: "Gurt-/Entgurtungsapparat", fr: "Appareil à garnir et à dégarnir" }
+        }
+      ]
+    },
+    {
+      key: "funk",
+      label: { de: "Funk", fr: "Radio" },
+      subs: [
+        {
+          key: "se_235",
+          label: {
+            de: "SE-235 tragbar: 3x Akku, SE-235, Tragversion",
+            fr: "SE-235 portable: 3x accu, SE-235, cacolet"
+          }
+        },
+        {
+          key: "se_135",
+          label: {
+            de: "SE-135: 3x Akku, SE-135, 1x Bändel lang, 1x Bändel kurz, 1x Tasche, 1x Antenne",
+            fr: "SE-135 portable: 3x accu, SE-135, 1x bretelle longue, 1x bretelle courte, 1x saccoche, 1x antenne"
+          }
+        },
+        {
+          key: "adressnetzplan_flt",
+          label: {
+            de: "Adressnetzplan Flt Bttr (blau)",
+            fr: "Plan de réseaux Bttr DF (bleu)"
+          }
+        },
+        {
+          key: "adressnetzplan_ffz",
+          label: {
+            de: "Adressnetzplan FFZ Bttr (weiss)",
+            fr: "Plan de réseaux Bttr CCF (blanc)"
+          }
+        },
+        {
+          key: "fill_gun",
+          label: { de: "Fill-Gun SE-X35", fr: "Fill-Gun SE-X35" }
+        },
+        {
+          key: "lautsprecher",
+          label: { de: "Lautsprecher tragbar", fr: "Haut-parleur portable" }
+        },
+        {
+          key: "fernantenne_geroh",
+          label: {
+            de: "Fernantenne «GEROH»: 1x Antenne, 1x Tasche und Bobine",
+            fr: "Antenne «GEROH»: 1x antenne, 1x saccoche et bobine"
+          }
+        },
+        {
+          key: "fernantenne_t",
+          label: {
+            de: "Fernantenne «t» (inkl 1x Tasche)",
+            fr: "Antenne «t» (incl. 1x saccoche)"
+          }
+        },
+        {
+          key: "feldtelefon",
+          label: {
+            de: "Feldtelefon: Kiste à 7 Ftf 90, Gabelstange, Bobine mit FK80, Bobine leer, 14x AA Batterien",
+            fr: "Téléphone de camp: caisse à 7 tc 90, perche à fourche, bobine avec câble 80, bobine vide, 14x piles AA"
+          }
+        },
+        {
+          key: "messgeraet_t02",
+          label: { de: "Messgerät T-02", fr: "Appareil de mesure T-02" }
+        },
+        {
+          key: "algt_96",
+          label: {
+            de: "Akkumulatorenladegerät (ALGT-96)",
+            fr: "Chargeur d'accumulateur (ALGT-93)"
+          }
+        },
+        {
+          key: "fba_235",
+          label: {
+            de: "FBA-235 (inkl. 1 Bobine Feldkabel, Gabelstange, 1x Bautasche)",
+            fr: "FBA-235 (incl. 1 bobine câble de campagne, perche à fourche, 1x saccoche de construction)"
+          }
+        },
+        {
+          key: "kabelverbindungszange",
+          label: { de: "Kabelverbindungszange", fr: "Pince à épissures" }
+        },
+        {
+          key: "bautasche",
+          label: { de: "Bautasche", fr: "Saccoche de construction" }
+        },
+        {
+          key: "linientasche",
+          label: { de: "Linientasche", fr: "Saccoche de ligne" }
+        }
+      ]
+    },
+    {
+      key: "sanitaet",
+      label: { de: "Sanitätsdienst", fr: "Service sanitaire" },
+      subs: [
+        { key: "sanitaetsbahre", label: { de: "Sanitätsbahre", fr: "Brancard sanitaire" } },
+        { key: "verbandsmaterial", label: { de: "Verbandsmaterial", fr: "Matériel de pansement" } },
+        {
+          key: "hemostage",
+          label: { de: "Hemostage-Ausrüstung (1 Kiste)", fr: "Équipement hémostase (1 caisse)" }
+        },
+        { key: "wolldecke", label: { de: "Wolldecke", fr: "Couverture de laine" } }
+      ]
+    },
+    {
+      key: "abc",
+      label: { de: "ABC", fr: "NBC" },
+      subs: [
+        {
+          key: "reinigungsmaterial_sm90",
+          label: { de: "Reinigungsmaterial zu SM90", fr: "Matériel de nettoyage pour MP90" }
+        },
+        {
+          key: "reinigungsmittel_flasche",
+          label: { de: "Reinigungsmittel (1 Flasche)", fr: "Liquide de nettoyage (1 bouteille)" }
+        }
+      ]
+    },
+    {
+      key: "allgemein",
+      label: { de: "Allgemein", fr: "Général" },
+      subs: [
+        { key: "schlaghammer", label: { de: "Schlaghammer 5 kg", fr: "Masse 5 kg" } },
+        { key: "locheisen", label: { de: "Locheisen", fr: "Barre à mine" } },
+        { key: "pickel", label: { de: "Pickel", fr: "Pioche" } },
+        { key: "schaufel", label: { de: "Schaufel", fr: "Pelle" } },
+        {
+          key: "markierungsfahne",
+          label: { de: "Markierungsfahne (Set à 6)", fr: "Fanions de marquage (set de 6)" }
+        },
+        {
+          key: "wassersack",
+          label: { de: "Wassersack (inkl. Innensack)", fr: "Sac à eau (incl. sac intérieur)" }
+        },
+        {
+          key: "tarnnetz",
+          label: { de: "Tarnnetz (Grösse je nach Verfügbarkeit)", fr: "Filet de camouflage (taille selon disponibilité)" }
+        },
+        { key: "handschellen", label: { de: "Handschellen", fr: "Menottes" } },
+        { key: "beil", label: { de: "Beil", fr: "Hache" } },
+        {
+          key: "nahkampfausruestung",
+          label: {
+            de: "Nahkampfausrüstung (1x Sack, 1x Kissen, 1x Stock)",
+            fr: "Moyens de contrainte (1x sac, 1x coussin, 1x bâton)"
+          }
+        },
+        {
+          key: "ausschusszelt",
+          label: { de: "Ausschusszelt", fr: "Toile de rebut" }
+        },
+        { key: "sitometer", label: { de: "Sitometer", fr: "Sitomètre" } },
+        { key: "bussole", label: { de: "Bussole", fr: "Boussole" } },
+        { key: "kabelbinder", label: { de: "Kabelbinder", fr: "Attaches jetables" } },
+        { key: "trassierband_gruen", label: { de: "Trassierband grün", fr: "Bande de minage vert" } },
+        { key: "trassierband_weiss", label: { de: "Trassierband weiss", fr: "Bande de minage blanc" } },
+        {
+          key: "trassierband_rot_weiss",
+          label: { de: "Trassierband rot/weiss", fr: "Bande de minage rouge/blanc" }
+        }
+      ]
+    },
+    {
+      key: "beobachten",
+      label: { de: "Beobachten", fr: "Observer" },
+      subs: [
+        { key: "feldstecher", label: { de: "Feldstecher", fr: "Jumelles" } },
+        {
+          key: "rlv_brille",
+          label: { de: "RLV-Brille in Kiste", fr: "ILR lunettes dans caisse" }
+        },
+        { key: "rlv_3x", label: { de: "RLV 3x", fr: "ILR 3x" } },
+        {
+          key: "rak_pistole",
+          label: { de: "Rak-Pistole / Pistolet", fr: "Lance-fusées" }
+        }
+      ]
+    }
   ];
 
   const state = {
@@ -448,63 +748,69 @@
     remarks: ""
   };
 
-  function escapeHtml(str){
-    return String(str)
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;");
-  }
-
+  // ===== HILFSFUNKTIONEN =====
   function isWeekend(date) {
     const d = date.getDay();
     return d === 0 || d === 6;
   }
   function isMonday(date) { return date.getDay() === 1; }
-  function pad(n) { return n<10?"0"+n:n; }
-  function toLocalInputValue(date){
-    return date.getFullYear()+"-"+pad(date.getMonth()+1)+"-"+pad(date.getDate())+
-      "T"+pad(date.getHours())+":"+pad(date.getMinutes());
+
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+
+  function toLocalInputValue(date) {
+    return date.getFullYear() + "-" + pad(date.getMonth()+1) + "-" + pad(date.getDate()) +
+           "T" + pad(date.getHours()) + ":" + pad(date.getMinutes());
   }
-  function mondayOrderDeadline(mondayDate){
-    const d=new Date(mondayDate.getTime());
-    d.setDate(d.getDate()-4);
+
+  function mondayOrderDeadline(mondayDate) {
+    const d = new Date(mondayDate.getTime());
+    d.setDate(d.getDate() - 4);   // zurück auf Donnerstag
     d.setHours(17,0,0,0);
     return d;
   }
 
-  function initDates(){
-    const now=new Date();
-    const abholung=new Date(now.getTime()+26*3600*1000);
-    const rueckgabe=new Date(now.getTime()+50*3600*1000);
-    while(isWeekend(abholung)) abholung.setDate(abholung.getDate()+1);
-    while(isWeekend(rueckgabe)) rueckgabe.setDate(rueckgabe.getDate()+1);
-    abholungEl.value=toLocalInputValue(abholung);
-    rueckgabeEl.value=toLocalInputValue(rueckgabe);
-    bestelldatumEl.value = "";
+  function initDates() {
+    const now = new Date();
+    const abholung = new Date(now.getTime() + 26*3600*1000);
+    const rueckgabe = new Date(now.getTime() + 50*3600*1000);
+    while (isWeekend(abholung)) abholung.setDate(abholung.getDate()+1);
+    while (isWeekend(rueckgabe)) rueckgabe.setDate(rueckgabe.getDate()+1);
+    abholungEl.value = toLocalInputValue(abholung);
+    rueckgabeEl.value = toLocalInputValue(rueckgabe);
+    bestelldatumEl.value = "";  // wird erst beim Weiter-Klick gesetzt
   }
 
-  function updateStepIndicator(step){
-    document.querySelectorAll(".step-dot").forEach((el,idx)=>{
-      if(idx<step) el.classList.add("active"); else el.classList.remove("active");
+  function updateStepIndicator(step) {
+    document.querySelectorAll(".step-segment").forEach((seg, idx) => {
+      const inner = seg.querySelector(".step-segment-inner");
+      if (idx < step) {
+        seg.classList.add("active");
+        inner.style.width = "100%";
+      } else {
+        seg.classList.remove("active");
+        inner.style.width = "0%";
+      }
     });
   }
-  function goToStep(step){
-    step1.style.display=step===1?"block":"none";
-    step2.style.display=step===2?"block":"none";
-    step3.style.display=step===3?"block":"none";
+
+  function goToStep(step) {
+    step1Wrapper.style.display = step === 1 ? "block" : "none";
+    step2Wrapper.style.display = step === 2 ? "block" : "none";
+    step3Wrapper.style.display = step === 3 ? "block" : "none";
     updateStepIndicator(step);
   }
 
-  function nextStep1(){
-    step1Error.textContent="";
-    const language=languageEl.value;
-    const best=besteller.value.trim();
-    const zug=zugEl.value;
-    const aVal=abholungEl.value;
-    const rVal=rueckgabeEl.value;
+  function nextStep1() {
+    step1Error.textContent = "";
+    const language = languageEl.value;
+    const best = besteller.value.trim();
+    const zug = zugEl.value;
+    const aVal = abholungEl.value;
+    const rVal = rueckgabeEl.value;
 
-    if(!language||!best||!zug||!aVal||!rVal){
-      step1Error.textContent="Bitte Sprache, Besteller, Zug sowie Abholung und Rückgabe ausfüllen.";
+    if (!language || !best || !zug || !aVal || !rVal) {
+      step1Error.textContent =
+        "Bitte Sprache, Besteller, Zug sowie Abholung und Rückgabe ausfüllen.";
       return;
     }
 
@@ -513,36 +819,36 @@
     const a = new Date(aVal);
     const r = new Date(rVal);
 
-    if(isWeekend(b)){
-      step1Error.textContent="Keine Bestellungen Sa/So.";
+    if (isWeekend(b)) {
+      step1Error.textContent = "Keine Bestellungen Sa/So.";
       return;
     }
-    if(isWeekend(a)||isWeekend(r)){
-      step1Error.textContent="Abholung/Rückgabe nur Mo–Fr.";
+    if (isWeekend(a) || isWeekend(r)) {
+      step1Error.textContent = "Abholung/Rückgabe nur Mo–Fr.";
       return;
     }
-    if(a-b<25*3600*1000){
-      step1Error.textContent="Abholung mind. +25 h nach Bestelldatum.";
+    if (a - b < 25*3600*1000) {
+      step1Error.textContent = "Abholung mind. +25 h nach Bestelldatum.";
       return;
     }
-    if(r<a){
-      step1Error.textContent="Rückgabe muss nach Abholung liegen.";
+    if (r < a) {
+      step1Error.textContent = "Rückgabe muss nach Abholung liegen.";
       return;
     }
-    if(isMonday(a)){
-      const deadline=mondayOrderDeadline(a);
-      if(b>deadline){
-        step1Error.textContent="Montag nur bestellbar bis Do 17:00 der Vorwoche.";
+    if (isMonday(a)) {
+      const deadline = mondayOrderDeadline(a);
+      if (b > deadline) {
+        step1Error.textContent = "Montag nur bestellbar bis Do 17:00 der Vorwoche.";
         return;
       }
     }
 
-    state.language=language;
-    state.besteller=best;
-    state.zug=zug;
-    state.bestelldatum=b.toISOString();
-    state.abholung=aVal;
-    state.rueckgabe=rVal;
+    state.language = language;
+    state.besteller = best;
+    state.zug = zug;
+    state.bestelldatum = b.toISOString();
+    state.abholung = aVal;
+    state.rueckgabe = rVal;
 
     bestelldatumEl.value = toLocalInputValue(b);
 
@@ -551,151 +857,141 @@
     goToStep(2);
   }
 
-  function getLang(){
+  function getLang() {
     return state.language || languageEl.value || "de";
   }
 
-  // *** NEU: robustes Rendern der Kategorien ***
-  function renderCategories(){
-    const lang=getLang();
-    const container=document.getElementById("categories");
-    container.innerHTML="";
-
-    if (!categories || !categories.length) {
-      container.textContent = lang==="fr"
-        ? "Aucune catégorie disponible."
-        : "Keine Kategorien definiert.";
-      return;
-    }
-
-    categories.forEach(cat=>{
-      const catName = cat.label[lang] || cat.label.de || "";
-      const wrapper=document.createElement("div");
-      wrapper.className="category";
-
-      let subsHtml = "";
-      (cat.subs || []).forEach(sub=>{
-        const nameRaw = sub.label[lang] || sub.label.de || "";
-        const name = escapeHtml(nameRaw).replace(/\n/g,"<br>");
-        const id = "subQty-"+cat.key+"-"+sub.key;
-        subsHtml +=
-          '<div class="qty-row">' +
-            '<span>'+ name +'</span>' +
-            '<input type="number" min="0" step="1" value="0" id="'+id+'">' +
-          '</div>';
-      });
-
-      wrapper.innerHTML =
-        '<div class="category-header" onclick="toggleCategory(\''+cat.key+'\')">' +
-          '<div class="category-title">'+ escapeHtml(catName) +'</div>' +
-        '</div>' +
-        '<div class="subcategories" id="subs-'+cat.key+'">' +
-          subsHtml +
-        '</div>';
-
+  function renderCategories() {
+    const lang = getLang();
+    const container = document.getElementById("categories");
+    container.innerHTML = "";
+    categories.forEach(cat => {
+      const catName = cat.label[lang] || cat.label.de;
+      const wrapper = document.createElement("div");
+      wrapper.className = "category";
+      wrapper.innerHTML = `
+        <div class="category-header" onclick="toggleCategory('${cat.key}')">
+          <div class="category-title">${catName}</div>
+          <div class="category-toggle">▼</div>
+        </div>
+        <div class="subcategories" id="subs-${cat.key}">
+          ${
+            cat.subs.map(sub => {
+              const name = sub.label[lang] || sub.label.de;
+              return `<div class="qty-row">
+                <span>${name}</span>
+                <input type="number" min="0" step="1" value="0" id="subQty-${cat.key}-${sub.key}">
+              </div>`;
+            }).join("")
+          }
+        </div>
+      `;
       container.appendChild(wrapper);
     });
   }
 
-  function toggleCategory(key){
-    const el=document.getElementById("subs-"+key);
-    if(el) el.classList.toggle("open");
+  function toggleCategory(key) {
+    const el = document.getElementById("subs-"+key);
+    if (el) el.classList.toggle("open");
   }
 
-  function nextStep2(){
-    step2Error.textContent="";
-    const lang=getLang();
-    const items=[];
-    categories.forEach(cat=>{
-      const catItem={key:cat.key,subs:[]};
-      (cat.subs || []).forEach(sub=>{
-        const el=document.getElementById("subQty-"+cat.key+"-"+sub.key);
-        if(!el) return;
-        const q=parseInt(el.value,10)||0;
-        if(q>0) catItem.subs.push({key:sub.key,qty:q});
+  function nextStep2() {
+    step2Error.textContent = "";
+    const lang = getLang();
+    const items = [];
+    categories.forEach(cat => {
+      const catItem = { key: cat.key, subs: [] };
+      cat.subs.forEach(sub => {
+        const el = document.getElementById("subQty-"+cat.key+"-"+sub.key);
+        if (!el) return;
+        const q = parseInt(el.value,10) || 0;
+        if (q > 0) catItem.subs.push({ key: sub.key, qty: q });
       });
-      if(catItem.subs.length) items.push(catItem);
+      if (catItem.subs.length) items.push(catItem);
     });
-    if(!items.length){
-      step2Error.textContent=lang==="fr"
-        ?"Veuillez sélectionner au moins une sous-catégorie avec une quantité."
-        :"Bitte mindestens eine Unterkategorie mit Menge auswählen.";
+    if (!items.length) {
+      step2Error.textContent =
+        lang === "fr"
+          ? "Veuillez sélectionner au moins une sous-catégorie avec une quantité."
+          : "Bitte mindestens eine Unterkategorie mit Menge auswählen.";
       return;
     }
-    state.items=items;
+    state.items = items;
     buildSummary();
     goToStep(3);
   }
 
-  function formatDateTime(val){
-    if(!val) return "";
-    const d=new Date(val);
-    if(isNaN(d)) return val;
+  function formatDateTime(val) {
+    if (!val) return "";
+    const d = new Date(val);
+    if (isNaN(d)) return val;
     return d.toLocaleString("de-CH");
   }
 
-  function resolveLabelLang(catKey, subKey, lang){
-    const cat=categories.find(c=>c.key===catKey);
-    if(!cat) return {cat:catKey, sub:subKey||""};
-    const catName=cat.label[lang] || cat.label.de;
-    if(!subKey) return {cat:catName, sub:""};
-    const sub=cat.subs.find(s=>s.key===subKey);
-    const subName=sub ? (sub.label[lang] || sub.label.de) : subKey;
-    return {cat:catName, sub:subName};
+  function resolveLabelLang(catKey, subKey, lang) {
+    const cat = categories.find(c => c.key === catKey);
+    if (!cat) return { cat: catKey, sub: subKey || "" };
+    const catName = cat.label[lang] || cat.label.de;
+    if (!subKey) return { cat: catName, sub: "" };
+    const sub = cat.subs.find(s => s.key === subKey);
+    const subName = sub ? (sub.label[lang] || sub.label.de) : subKey;
+    return { cat: catName, sub: subName };
   }
 
-  function resolveLabel(catKey, subKey){
-    const lang=getLang();
+  function resolveLabel(catKey, subKey) {
+    const lang = getLang();
     return resolveLabelLang(catKey, subKey, lang);
   }
 
-  function updateTextByLanguage(){
-    const lang=getLang();
-    step2Title.textContent=lang==="fr"?"2. Matériel":"2. Material";
-    step2Intro.textContent=lang==="fr"
-      ?"Choisissez les catégories de matériel nécessaires et indiquez les quantités."
-      :"Wähle die benötigten Materialkategorien und gib die Menge an.";
-    step3Title.textContent=lang==="fr"?"3. Récapitulatif":"3. Zusammenfassung";
+  function updateTextByLanguage() {
+    const lang = getLang();
+    step2TitleBar.textContent = lang === "fr" ? "2. Matériel" : "2. Material";
+    step2Intro.textContent =
+      lang === "fr"
+        ? "Choisissez les catégories de matériel nécessaires et indiquez les quantités."
+        : "Wähle die benötigten Materialkategorien und gib die Menge an.";
+    step3TitleBar.textContent =
+      lang === "fr" ? "3. Récapitulatif" : "3. Zusammenfassung";
   }
 
-  function buildSummary(){
-    const lang=getLang();
-    let html="";
-    html+=`<p><strong>${lang==="fr"?"Demandeur":"Besteller"}:</strong> ${state.besteller}</p>`;
-    html+=`<p><strong>${lang==="fr"?"Section":"Zug"}:</strong> ${state.zug}</p>`;
-    html+=`<p><strong>${lang==="fr"?"Langue":"Sprache"}:</strong> ${lang==="fr"?"Français":"Deutsch"}</p>`;
-    html+=`<p><strong>${lang==="fr"?"Date de la demande":"Bestelldatum"}:</strong> ${formatDateTime(state.bestelldatum)}</p>`;
-    html+=`<p><strong>${lang==="fr"?"Retrait":"Abholung"}:</strong> ${formatDateTime(state.abholung)}</p>`;
-    html+=`<p><strong>${lang==="fr"?"Retour":"Rückgabe"}:</strong> ${formatDateTime(state.rueckgabe)}</p>`;
-    html+=`<h3>${lang==="fr"?"Matériel":"Material"}</h3>`;
-    html+="<ul class='summary'>";
-    state.items.forEach(item=>{
-      const l=resolveLabel(item.key);
-      html+=`<li><strong>${l.cat}</strong><ul>`;
-      item.subs.forEach(sub=>{
-        const sl=resolveLabel(item.key,sub.key);
-        html+=`<li>${sl.sub}: ${sub.qty}</li>`;
+  function buildSummary() {
+    const lang = getLang();
+    let html = "";
+    html += `<p><strong>${lang==="fr"?"Demandeur":"Besteller"}:</strong> ${state.besteller}</p>`;
+    html += `<p><strong>${lang==="fr"?"Section":"Zug"}:</strong> ${state.zug}</p>`;
+    html += `<p><strong>${lang==="fr"?"Langue":"Sprache"}:</strong> ${lang==="fr"?"Français":"Deutsch"}</p>`;
+    html += `<p><strong>${lang==="fr"?"Date de la demande":"Bestelldatum"}:</strong> ${formatDateTime(state.bestelldatum)}</p>`;
+    html += `<p><strong>${lang==="fr"?"Retrait":"Abholung"}:</strong> ${formatDateTime(state.abholung)}</p>`;
+    html += `<p><strong>${lang==="fr"?"Retour":"Rückgabe"}:</strong> ${formatDateTime(state.rueckgabe)}</p>`;
+    html += `<h3>${lang==="fr"?"Matériel":"Material"}</h3>`;
+    html += "<ul class='summary'>";
+    state.items.forEach(item => {
+      const l = resolveLabel(item.key);
+      html += `<li><strong>${l.cat}</strong><ul>`;
+      item.subs.forEach(sub => {
+        const sl = resolveLabel(item.key, sub.key);
+        html += `<li>${sl.sub}: ${sub.qty}</li>`;
       });
-      html+="</ul></li>";
+      html += "</ul></li>";
     });
-    html+="</ul>";
+    html += "</ul>";
 
     if (state.remarks && state.remarks.trim() !== "") {
-      const safeRemarks = escapeHtml(state.remarks);
-      html += `<h3>Bemerkungen / Remarques</h3>`;
-      html += `<p>${safeRemarks.replace(/\n/g,"<br>")}</p>`;
+      const safeRemarks = state.remarks
+        .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+      html += `<h3>Bemerkungen / Remarques</h3><p>${safeRemarks}</p>`;
     }
 
-    summaryContent.innerHTML=html;
-    sendInfo.textContent="";
+    summaryContent.innerHTML = html;
+    sendInfo.textContent = "";
   }
 
-  function buildMailBody(){
-    let body="";
+  function buildMailBody() {
+    let body = "";
     body += "Besteller / Demandeur: " + state.besteller + "\n";
     body += "Zug / Section: " + state.zug + "\n";
     body += "Sprache in der App / Langue dans l'application: " +
-      (state.language==="fr"?"Französisch / Français":"Deutsch / Allemand") + "\n";
+      (state.language==="fr" ? "Französisch / Français" : "Deutsch / Allemand") + "\n";
     body += "Bestelldatum / Date de la demande: " + formatDateTime(state.bestelldatum) + "\n";
     body += "Abholung / Retrait: " + formatDateTime(state.abholung) + "\n";
     body += "Rückgabe / Retour: " + formatDateTime(state.rueckgabe) + "\n";
@@ -705,22 +1001,20 @@
     }
 
     body += "\nMaterial (Deutsch):\n";
-    state.items.forEach(item=>{
+    state.items.forEach(item => {
       const lDe = resolveLabelLang(item.key, null, "de");
       body += "- " + lDe.cat + "\n";
-      item.subs.forEach(sub=>{
+      item.subs.forEach(sub => {
         const slDe = resolveLabelLang(item.key, sub.key, "de");
         body += "   • " + slDe.sub + ": " + sub.qty + "\n";
       });
     });
 
-    body += "\n------------------------------\n\n";
-
-    body += "Matériel (Français):\n";
-    state.items.forEach(item=>{
+    body += "\n------------------------------\n\nMatériel (Français):\n";
+    state.items.forEach(item => {
       const lFr = resolveLabelLang(item.key, null, "fr");
       body += "- " + lFr.cat + "\n";
-      item.subs.forEach(sub=>{
+      item.subs.forEach(sub => {
         const slFr = resolveLabelLang(item.key, sub.key, "fr");
         body += "   • " + slFr.sub + ": " + sub.qty + "\n";
       });
@@ -729,7 +1023,7 @@
     return body;
   }
 
-  function sendOrder(){
+  function sendOrder() {
     const lang = getLang();
     state.remarks = remarksEl.value.trim();
 
@@ -772,25 +1066,28 @@
   }
 
   // DOM-Shortcuts
-  const languageEl=document.getElementById("language");
-  const besteller=document.getElementById("besteller");
-  const zugEl=document.getElementById("zug");
-  const bestelldatumEl=document.getElementById("bestelldatum");
-  const abholungEl=document.getElementById("abholung");
-  const rueckgabeEl=document.getElementById("rueckgabe");
-  const step1Error=document.getElementById("step1Error");
-  const step2Error=document.getElementById("step2Error");
-  const step2Title=document.getElementById("step2Title");
-  const step2Intro=document.getElementById("step2Intro");
-  const step3Title=document.getElementById("step3Title");
-  const summaryContent=document.getElementById("summaryContent");
-  const sendInfo=document.getElementById("sendInfo");
-  const step1=document.getElementById("step1");
-  const step2=document.getElementById("step2");
-  const step3=document.getElementById("step3");
-  const remarksEl=document.getElementById("remarks");
+  const languageEl   = document.getElementById("language");
+  const besteller    = document.getElementById("besteller");
+  const zugEl        = document.getElementById("zug");
+  const bestelldatumEl = document.getElementById("bestelldatum");
+  const abholungEl   = document.getElementById("abholung");
+  const rueckgabeEl  = document.getElementById("rueckgabe");
+  const step1Error   = document.getElementById("step1Error");
+  const step2Error   = document.getElementById("step2Error");
+  const step2TitleBar= document.getElementById("step2TitleBar");
+  const step2Intro   = document.getElementById("step2Intro");
+  const step3TitleBar= document.getElementById("step3TitleBar");
+  const summaryContent = document.getElementById("summaryContent");
+  const sendInfo     = document.getElementById("sendInfo");
+  const step1Wrapper = document.getElementById("step1Wrapper");
+  const step2Wrapper = document.getElementById("step2Wrapper");
+  const step3Wrapper = document.getElementById("step3Wrapper");
+  const remarksEl    = document.getElementById("remarks");
 
-  window.addEventListener("load", initDates);
+  window.addEventListener("load", () => {
+    initDates();
+    updateStepIndicator(0); // noch im Login
+  });
 </script>
 </body>
 </html>
