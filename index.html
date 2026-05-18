@@ -1,912 +1,746 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Materialbestellung</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <style>
-    :root{
-      --bg-main:#f0f2f5;
-      --bg-card:#ffffff;
-      --border-card:#d0d4da;
-      --accent-dark:#1f2a2c;
-      --accent-main:#2f4f39;
-      --accent-light:#d7dbe0;
-      --text-main:#111111;
-      --text-muted:#555555;
-      --error:#b02020;
-    }
+<title>FLT BTTR FFZ – Materialbestellung</title>
 
-    body{
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      margin:0;
-      background:var(--bg-main);
-      color:var(--text-main);
-    }
-    .app{
-      max-width:720px;
-      margin:0 auto;
-      padding:0 16px 32px;
-    }
-    h1{
-      font-size:1.4rem;
-      margin:0 -16px 12px;
-      padding:12px 16px;
-      background:var(--accent-dark);
-      color:#fff;
-      text-transform:uppercase;
-      letter-spacing:.06em;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      box-sizing:border-box;
-    }
-    h1 .version{
-      font-size:.75rem;
-      font-weight:400;
-      opacity:.85;
-    }
-    h2{ font-size:1.05rem; margin:0 0 8px; }
-    h3{
-      font-size:.9rem;
-      margin:12px 0 4px;
-      text-transform:uppercase;
-      letter-spacing:.04em;
-      color:var(--text-muted);
-    }
-    .card{
-      background:var(--bg-card);
-      border-radius:4px;
-      padding:16px;
-      border:1px solid var(--border-card);
-      margin-top:12px;
-      box-shadow:none;
-    }
-    label{
-      display:block;
-      font-size:.8rem;
-      margin-bottom:3px;
-      text-transform:uppercase;
-      letter-spacing:.04em;
-      color:var(--text-muted);
-    }
-    input,select,textarea{
-      width:100%;
-      padding:7px 9px;
-      border-radius:3px;
-      border:1px solid #c0c4cc;
-      font-size:.95rem;
-      box-sizing:border-box;
-      background:#fff;
-    }
-    input:focus,select:focus,textarea:focus{
-      outline:1px solid var(--accent-main);
-      border-color:var(--accent-main);
-    }
-    input[type="password"]{ letter-spacing:.12em; }
-    textarea{ resize:vertical; }
+<style>
+:root{
+  --bg:#f0f2f5;
+  --card:#ffffff;
+  --dark:#1f2a2c;
+  --green:#2f4f39;
+  --light:#d7dbe0;
+  --border:#d0d4da;
+}
 
-    .button-row{ display:flex; gap:8px; margin-top:12px; }
-    button{
-      flex:1;
-      padding:9px 14px;
-      border-radius:999px;
-      border:none;
-      font-size:.95rem;
-      cursor:pointer;
-      font-weight:500;
-    }
-    button.primary{ background:var(--accent-main); color:#fff; }
-    button.primary:hover{ filter:brightness(1.05); }
-    button.secondary{ background:var(--accent-light); color:#111; }
-    button.secondary:hover{ filter:brightness(.97); }
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);
+}
 
-    .error{
-      color:var(--error);
-      font-size:.8rem;
-      margin-top:4px;
-      white-space:pre-wrap;
-    }
+.app{
+  max-width:900px;
+  margin:auto;
+  padding:10px;
+}
 
-    .step-indicator{ display:flex; gap:4px; margin:4px 0 12px; }
-    .step-dot{ flex:1; height:4px; background:#c2c7cf; border-radius:999px; }
-    .step-dot.active{ background:var(--accent-main); }
+h1{
+  background:var(--dark);
+  color:white;
+  padding:18px;
+  border-radius:6px;
+  font-size:2rem;
+  margin-bottom:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
-    .category{
-      border-top:1px solid #e0e3ea;
-      padding-top:10px;
-      margin-top:10px;
-    }
-    .category-header{
-      display:flex;
-      justify-content:space-between;
-      cursor:pointer;
-      align-items:center;
-    }
-    .category-title{
-      font-weight:600;
-      font-size:.9rem;
-      text-transform:uppercase;
-      letter-spacing:.04em;
-    }
-    .subcategories{ margin-top:6px; display:none; }
-    .subcategories.open{ display:block; }
+.version{
+  font-size:0.9rem;
+  opacity:0.8;
+}
 
-    .qty-row{
-      display:grid;
-      grid-template-columns:3fr .9fr;
-      gap:8px;
-      margin-bottom:4px;
-      align-items:center;
-    }
-    .qty-row span{ font-size:.85rem; }
-    .qty-row input[type="number"]{
-      width:100%;
-      text-align:right;
-      padding-right:6px;
-    }
+.card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:25px;
+}
 
-    ul.summary{ padding-left:18px; margin-top:4px; }
-    ul.summary>li{ margin-bottom:4px; }
+.step-indicator{
+  display:flex;
+  gap:5px;
+  margin-bottom:15px;
+}
 
-    .rulebox{
-      font-size:.8rem;
-      color:#555;
-      border-left:3px solid var(--accent-main);
-      padding-left:8px;
-      line-height:1.35;
+.step-dot{
+  height:6px;
+  flex:1;
+  background:#cfd4d9;
+  border-radius:999px;
+}
+
+.step-dot.active{
+  background:var(--green);
+}
+
+label{
+  display:block;
+  margin-top:14px;
+  margin-bottom:4px;
+  font-size:0.85rem;
+  font-weight:600;
+}
+
+input, select, textarea{
+  width:100%;
+  padding:10px;
+  border:1px solid #c7ccd1;
+  border-radius:4px;
+  box-sizing:border-box;
+  font-size:1rem;
+}
+
+textarea{
+  resize:vertical;
+}
+
+button{
+  border:none;
+  padding:14px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:1rem;
+  flex:1;
+}
+
+.primary{
+  background:var(--green);
+  color:white;
+}
+
+.secondary{
+  background:var(--light);
+}
+
+.button-row{
+  display:flex;
+  gap:12px;
+  margin-top:20px;
+}
+
+.category{
+  border-top:1px solid #e2e5ea;
+  margin-top:14px;
+  padding-top:14px;
+}
+
+.category-header{
+  cursor:pointer;
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+.subs{
+  display:none;
+  margin-top:10px;
+}
+
+.subs.open{
+  display:block;
+}
+
+.qty-row{
+  display:grid;
+  grid-template-columns:1fr 100px;
+  gap:10px;
+  margin-bottom:6px;
+  align-items:center;
+}
+
+.error{
+  color:#b30000;
+  margin-top:10px;
+}
+
+.success{
+  color:#006400;
+  margin-top:10px;
+}
+
+.summary ul{
+  margin-top:4px;
+}
+
+@media(max-width:600px){
+  h1{
+    font-size:1.4rem;
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .qty-row{
+    grid-template-columns:1fr 70px;
+  }
+}
+</style>
+
+<!-- EMAILJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+/* =========================
+   EMAILJS DATEN
+========================= */
+
+const EMAILJS_PUBLIC_KEY = "ea8CHyfL3ZcO48AfE";
+const EMAILJS_SERVICE_ID = "service_qwz9qbt";
+const EMAILJS_TEMPLATE_ID = "template_i6hs68v";
+
+emailjs.init({
+  publicKey: EMAILJS_PUBLIC_KEY
+});
+
+/* =========================
+   PASSWORT
+========================= */
+
+const PASSWORD = "Material2_2026!";
+
+/* =========================
+   STATE
+========================= */
+
+const state = {
+  language:"",
+  besteller:"",
+  zug:"",
+  bestelldatum:"",
+  abholung:"",
+  rueckgabe:"",
+  items:[]
+};
+
+/* =========================
+   KATEGORIEN
+========================= */
+
+const categories = [
+{
+  key:"san",
+  label:"Sanitätsdienst",
+  subs:[
+    "Sanitätsbahre",
+    "Verbandsmaterial",
+    "Wolldecke"
+  ]
+},
+{
+  key:"funk",
+  label:"Funk",
+  subs:[
+    "SE-235",
+    "SE-135",
+    "Adressnetzplan"
+  ]
+},
+{
+  key:"allg",
+  label:"Allgemein",
+  subs:[
+    "Kabelbinder",
+    "Schaufel",
+    "Pickel",
+    "Tarnnetz"
+  ]
+}
+];
+
+/* =========================
+   HELPERS
+========================= */
+
+function pad(n){
+  return n < 10 ? "0"+n : n;
+}
+
+function toInputDate(d){
+  return d.getFullYear() + "-" +
+  pad(d.getMonth()+1) + "-" +
+  pad(d.getDate()) + "T" +
+  pad(d.getHours()) + ":" +
+  pad(d.getMinutes());
+}
+
+function formatDate(d){
+  return new Date(d).toLocaleString("de-CH");
+}
+
+function escapeHtml(str){
+  return str
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;");
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+function handleLogin(){
+
+  const pw = document.getElementById("pwInput").value;
+
+  if(pw === PASSWORD){
+    document.getElementById("loginCard").style.display = "none";
+    document.getElementById("appCard").style.display = "block";
+
+    initDates();
+  } else {
+    document.getElementById("loginError").textContent = "Passwort falsch.";
+  }
+}
+
+/* =========================
+   INIT DATES
+========================= */
+
+function initDates(){
+
+  const now = new Date();
+
+  bestelldatum.value = toInputDate(now);
+
+  const pickup = new Date(now.getTime() + 26*60*60*1000);
+  const ret = new Date(now.getTime() + 50*60*60*1000);
+
+  abholung.value = toInputDate(pickup);
+  rueckgabe.value = toInputDate(ret);
+}
+
+/* =========================
+   STEPS
+========================= */
+
+function goToStep(step){
+
+  step1.style.display = "none";
+  step2.style.display = "none";
+  step3.style.display = "none";
+
+  document.getElementById("step"+step).style.display = "block";
+
+  document.querySelectorAll(".step-dot").forEach((e,i)=>{
+    if(i < step){
+      e.classList.add("active");
+    } else {
+      e.classList.remove("active");
     }
+  });
+}
 
-    @media (max-width:480px){
-      h1{
-        font-size:1.2rem;
-        flex-direction:column;
-        align-items:flex-start;
-        gap:2px;
+/* =========================
+   STEP 1
+========================= */
+
+function nextStep1(){
+
+  const error = document.getElementById("step1Error");
+  error.textContent = "";
+
+  if(
+    !language.value ||
+    !besteller.value ||
+    !zug.value ||
+    !abholung.value ||
+    !rueckgabe.value
+  ){
+    error.textContent = "Bitte alle Felder ausfüllen.";
+    return;
+  }
+
+  state.language = language.value;
+  state.besteller = besteller.value;
+  state.zug = zug.value;
+  state.bestelldatum = bestelldatum.value;
+  state.abholung = abholung.value;
+  state.rueckgabe = rueckgabe.value;
+
+  renderCategories();
+
+  goToStep(2);
+}
+
+/* =========================
+   RENDER KATEGORIEN
+========================= */
+
+function renderCategories(){
+
+  categoriesContainer.innerHTML = "";
+
+  categories.forEach(cat=>{
+
+    const div = document.createElement("div");
+
+    div.className = "category";
+
+    div.innerHTML = `
+      <div class="category-header"
+           onclick="toggleCat('${cat.key}')">
+        ${cat.label}
+      </div>
+
+      <div class="subs"
+           id="subs-${cat.key}">
+
+        ${cat.subs.map(sub=>`
+          <div class="qty-row">
+            <div>${sub}</div>
+
+            <input type="number"
+                   min="0"
+                   value="0"
+                   id="${cat.key}-${sub}">
+          </div>
+        `).join("")}
+      </div>
+    `;
+
+    categoriesContainer.appendChild(div);
+  });
+}
+
+function toggleCat(key){
+
+  document
+    .getElementById("subs-"+key)
+    .classList.toggle("open");
+}
+
+/* =========================
+   STEP 2
+========================= */
+
+function nextStep2(){
+
+  const selected = [];
+
+  categories.forEach(cat=>{
+
+    cat.subs.forEach(sub=>{
+
+      const val = parseInt(
+        document.getElementById(cat.key+"-"+sub).value
+      );
+
+      if(val > 0){
+
+        selected.push({
+          category:cat.label,
+          sub,
+          qty:val
+        });
       }
-      h1 .version{ align-self:flex-end; }
-      .qty-row{ grid-template-columns:2.3fr 1fr; }
-    }
-  </style>
+    });
+  });
 
-  <!-- EmailJS: direktes Versenden -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script>
-    const EMAILJS_SERVICE_ID  = "service_qwz9qbt";
-    const EMAILJS_TEMPLATE_ID = "template_i6hs68v";
-    const EMAILJS_PUBLIC_KEY  = "ea8CHyfL3ZcO48AfE";
-    (function(){ emailjs.init(EMAILJS_PUBLIC_KEY); })();
-  </script>
+  if(selected.length === 0){
+    step2Error.textContent =
+      "Bitte mindestens 1 Material auswählen.";
+    return;
+  }
+
+  state.items = selected;
+
+  buildSummary();
+
+  goToStep(3);
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+function buildSummary(){
+
+  let html = `
+    <p><strong>Besteller:</strong> ${escapeHtml(state.besteller)}</p>
+
+    <p><strong>Zug:</strong> ${escapeHtml(state.zug)}</p>
+
+    <p><strong>Sprache:</strong> ${escapeHtml(state.language)}</p>
+
+    <p><strong>Bestelldatum:</strong> ${formatDate(state.bestelldatum)}</p>
+
+    <p><strong>Abholung:</strong> ${formatDate(state.abholung)}</p>
+
+    <p><strong>Rückgabe:</strong> ${formatDate(state.rueckgabe)}</p>
+
+    <h3>Material</h3>
+
+    <ul>
+  `;
+
+  state.items.forEach(item=>{
+
+    html += `
+      <li>
+        <strong>${item.category}</strong><br>
+        ${item.sub}: ${item.qty}
+      </li>
+    `;
+  });
+
+  html += "</ul>";
+
+  summaryContent.innerHTML = html;
+}
+
+/* =========================
+   EMAIL BODY
+========================= */
+
+function buildMailBody(){
+
+  let body = "";
+
+  body += "Besteller: " + state.besteller + "\n";
+  body += "Zug: " + state.zug + "\n";
+  body += "Sprache: " + state.language + "\n";
+  body += "Bestelldatum: " + formatDate(state.bestelldatum) + "\n";
+  body += "Abholung: " + formatDate(state.abholung) + "\n";
+  body += "Rückgabe: " + formatDate(state.rueckgabe) + "\n\n";
+
+  body += "MATERIAL\n";
+  body += "====================\n";
+
+  state.items.forEach(item=>{
+
+    body += item.category + " - " +
+            item.sub + ": " +
+            item.qty + "\n";
+  });
+
+  return body;
+}
+
+/* =========================
+   SENDEN
+========================= */
+
+function sendOrder(){
+
+  sendInfo.className = "";
+  sendInfo.textContent = "Bestellung wird versendet...";
+
+  const subject =
+    "Materialbestellung - " +
+    state.zug +
+    " - " +
+    state.besteller;
+
+  const body = buildMailBody();
+
+  const templateParams = {
+
+    to_email:"flt.ffz.bttr@gmail.com",
+
+    subject:subject,
+
+    message:body,
+
+    besteller:state.besteller,
+
+    zug:state.zug
+  };
+
+  emailjs.send(
+    EMAILJS_SERVICE_ID,
+    EMAILJS_TEMPLATE_ID,
+    templateParams
+  )
+  .then(function(response){
+
+    console.log("SUCCESS", response);
+
+    sendInfo.className = "success";
+    sendInfo.textContent =
+      "Bestellung erfolgreich versendet.";
+
+  })
+  .catch(function(error){
+
+    console.error("FAILED", error);
+
+    sendInfo.className = "error";
+
+    sendInfo.innerHTML =
+      "Fehler beim Versenden.<br><br>" +
+      "Prüfe bitte:<br>" +
+      "• Service ID<br>" +
+      "• Template ID<br>" +
+      "• Public Key<br>" +
+      "• ob dein EmailJS Template aktiviert ist";
+  });
+}
+</script>
 </head>
 
 <body>
-  <div class="app">
-    <h1>
-      Flt Bttr FFZ – Materialbestellung
-      <span class="version">Version 1.3</span>
-    </h1>
 
-    <!-- LOGIN -->
-    <div id="loginCard" class="card">
-      <h2>Anmeldung</h2>
-      <p style="font-size:0.9rem;color:#555;">Diese Seite ist geschützt. Bitte Passwort eingeben.</p>
-      <div class="field">
-        <label for="pwInput">Passwort</label>
-        <input id="pwInput" type="password" autocomplete="current-password" />
-      </div>
-      <div id="loginError" class="error"></div>
-      <div class="button-row">
-        <button class="primary" onclick="handleLogin()">Login</button>
-      </div>
-      <p style="font-size:0.75rem;color:#777;margin-top:12px;">
-        Hinweis: Das Passwort wird im Browser als SHA-256 Hash geprüft, nicht im Klartext gespeichert.
-      </p>
-    </div>
+<div class="app">
 
-    <!-- APP -->
-    <div id="appCard" style="display:none;">
-      <div class="step-indicator">
-        <div class="step-dot active" data-step="1"></div>
-        <div class="step-dot" data-step="2"></div>
-        <div class="step-dot" data-step="3"></div>
-      </div>
+<h1>
+  FLT BTTR FFZ – MATERIALBESTELLUNG
+  <span class="version">VERSION 1.3</span>
+</h1>
 
-      <!-- STEP 1 -->
-      <div id="step1" class="card">
-        <h2>1. Grunddaten / Données de base</h2>
+<!-- LOGIN -->
 
-        <p class="rulebox">
-          <strong>Regeln / Règles / Regole</strong><br />
-          – Abholung & Rückgabe nur Montag–Freitag.<br />
-          – Abholung mindestens 25 h nach Bestelldatum (automatisch).<br />
-          – Abholung am Montag nur möglich, wenn Bestellung bis Donnerstag 17:00 der Vorwoche erfolgt ist.<br />
-          – Bestellung am Samstag/Sonntag ist erlaubt, aber nur mit Abholung am Dienstag.
-        </p>
+<div id="loginCard" class="card">
 
-        <h3>Personalien</h3>
-        <div class="field">
-          <label for="language">Sprache / Langue / Lingua</label>
-          <select id="language">
-            <option value="">Bitte wählen / Veuillez choisir / Seleziona</option>
-            <option value="de">Deutsch</option>
-            <option value="fr">Français</option>
-            <option value="it">Italiano</option>
-          </select>
-        </div>
+  <h2>Anmeldung</h2>
 
-        <div class="field">
-          <label for="besteller">Besteller / Demandeur / Richiedente</label>
-          <input id="besteller" type="text" placeholder="Name / Nom / Nome, Funktion / Fonction / Funzione" />
-        </div>
+  <label>Passwort</label>
 
-        <div class="field">
-          <label for="zug">Zug / Section / Sezione</label>
-          <select id="zug">
-  <option value="">Bitte wählen / Veuillez choisir / Seleziona</option>
-  <option value="C1">C1</option>
-  <option value="M113">M113</option>
-  <option value="KDO">KDO</option>
-  <option value="UEM 1">UEM 1</option>
-  <option value="UEM 2">UEM 2</option>
-  <option value="WETTER">WETTER</option>
-  <option value="BM">BM</option>
-</select>
-        </div>
+  <input type="password"
+         id="pwInput">
 
-        <h3>Zeitliche Vorgaben</h3>
-        <div class="field">
-          <label for="bestelldatum">Bestelldatum (automatisch) / Date automatique / Data automatica</label>
-          <input id="bestelldatum" type="datetime-local" readonly />
-        </div>
+  <div class="button-row">
 
-        <div class="field">
-          <label for="abholung">Abholung (Mo–Fr, min. +25 h) / Retrait (lu–ve) / Ritiro (lu–ve)</label>
-          <input id="abholung" type="datetime-local" />
-        </div>
+    <button class="primary"
+            onclick="handleLogin()">
+      Login
+    </button>
 
-        <div class="field">
-          <label for="rueckgabe">Rückgabe (Mo–Fr) / Retour (lu–ve) / Reso (lu–ve)</label>
-          <input id="rueckgabe" type="datetime-local" />
-        </div>
-
-        <div id="step1Error" class="error"></div>
-        <div class="button-row">
-          <button class="primary" onclick="nextStep1()">Weiter / Suivant / Avanti</button>
-        </div>
-      </div>
-
-      <!-- STEP 2 -->
-      <div id="step2" class="card" style="display:none;">
-        <h2 id="step2Title">2. Material</h2>
-        <p id="step2Intro">Wähle die benötigten Materialkategorien und gib die Menge an.</p>
-
-        <div id="categories"></div>
-
-        <!-- Verbrauchsmaterial / Consumables -->
-        <div class="category" style="margin-top:14px;">
-          <div class="category-header" style="cursor:default;">
-            <div class="category-title" id="consumablesTitle">Verbrauchsmaterial</div>
-          </div>
-          <p id="consumablesHint" style="margin:6px 0 8px; font-size:0.85rem; color:#555;">
-            Falls das Gewünschte nicht in den Listen ist, bitte hier aufführen (mit Menge).
-          </p>
-          <textarea id="consumables" rows="4" placeholder="z.B. Kabelbinder 10x, Batterien AA 6x ..."></textarea>
-        </div>
-
-        <div id="step2Error" class="error"></div>
-        <div class="button-row">
-          <button class="secondary" onclick="goToStep(1)">Zurück / Retour / Indietro</button>
-          <button class="primary" onclick="nextStep2()">Weiter / Suivant / Avanti</button>
-        </div>
-      </div>
-
-      <!-- STEP 3 -->
-      <div id="step3" class="card" style="display:none;">
-        <h2 id="step3Title">3. Zusammenfassung / Récapitulatif / Riepilogo</h2>
-        <div id="summaryContent"></div>
-
-        <div class="button-row">
-          <button class="secondary" onclick="goToStep(2)">Zurück / Retour / Indietro</button>
-          <button class="primary" onclick="sendOrder()">Senden / Envoyer / Inviare</button>
-        </div>
-        <div id="sendInfo" class="error" style="color:#060;"></div>
-      </div>
-    </div>
   </div>
 
-<script>
-  // ===== Passwort-Logik =====
-  const PASSWORD = "Material2_2026!";
+  <div class="error"
+       id="loginError"></div>
 
-  function handleLogin(){
-    const pwInput = document.getElementById("pwInput");
-    const errorEl = document.getElementById("loginError");
+</div>
 
-    errorEl.textContent = "";
+<!-- APP -->
 
-    const value = pwInput.value;
+<div id="appCard"
+     style="display:none;">
 
-    if(!value){
-      errorEl.textContent = "Bitte Passwort eingeben.";
-      return;
-    }
+<div class="step-indicator">
+  <div class="step-dot active"></div>
+  <div class="step-dot"></div>
+  <div class="step-dot"></div>
+</div>
 
-    if(value === PASSWORD){
-      document.getElementById("loginCard").style.display = "none";
-      document.getElementById("appCard").style.display = "block";
-      initDates();
-    } else {
-      errorEl.textContent = "Passwort falsch.";
-    }
-  }
+<!-- STEP 1 -->
 
-  // ===== Kategorien (de/fr – it fallback auf de) =====
-  const categories = [
-    {
-      "key":"stgw_90",
-      "label":{"de":"Stgw 90","fr":"Fass 90"},
-      "subs":[
-        {"key":"standard_kd_box_1x_schiessfahne_komplett_1x_magazintasche_5x_ausschusszelt","label":{"de":"Standard KD-Box: 1x Schiessfahne komplett, 1x Magazintasche, 5x Ausschusszelt","fr":"Box courte distance standard: 1x drapeau de tir complet, 1x saccoche magazin, 5x toiles de rebut"}},
-        {"key":"standard_gef_s_2x_schiessfahne_komplett_2x_magazintasche_1x_rak_pist_10x_ausschusszelt_3x_l_rmsprechgarnituren_komplett_3x_se_135_komplett_1x_anp_1x_fg_235_1x_sanit_tsbahre_1x_wolldecke_1x_verbandsmaterial_6x_aa_batterien","label":{"de":"Standard Gef S (2x Schiessfahne komplett, 2x Magazintasche, 1x Rak-Pist, 10x Ausschusszelt, 3x Lärmsprechgarnituren komplett, 3x SE-135 komplett, 1x ANP, 1x FG-235, 1x Sanitätsbahre, 1x Wolldecke, 1x Verbandsmaterial, 6x AA Batterien","fr":"Tir de combat standard: 2x drapeau de tir, 2x saccoche magazin, 1x lance fusées, 10x toiles de rebut, 3x ganiture contre le bruit complet, 3x SE-135 complet,1x ANP, 1x FG-235,1x brancard sanitaire, 1x couverture de laine, 1x matériel de pensement, 6x batterie AA"}},
-        {"key":"manipats_5_6mm","label":{"de":"Manipats 5.6mm","fr":"Manipats 5.6mm"}},
-        {"key":"zugsparkdienstkiste","label":{"de":"Zugsparkdienstkiste","fr":"Caisse de service de parc"}},
-        {"key":"magazintasche_18_st_ck","label":{"de":"Magazintasche à 18 Stück","fr":"Saccoche à magazin à 18 pièces"}}
-      ]
-    },
-    {
-      "key":"mg_64",
-      "label":{"de":"MG 64","fr":"Mitr 64"},
-      "subs":[
-        {"key":"mg_64_12_7mm_3_beinlaffette_lehren_und_reinigungsmaterial_2_verschl_sse","label":{"de":"MG 64 12.7mm: 3-Beinlaffette, Lehren- und Reinigungsmaterial, 2 Verschlüsse","fr":"Mitr 64 12.7mm: Affut 3-pied, jauges et matériel de nettoyage, 2 culasses"}},
-        {"key":"manipats_12_7mm_kiste_100","label":{"de":"Manipats 12.7mm (Kiste à 100)","fr":"Manipats 12.7mm (caisse à 100)"}},
-        {"key":"gurt_entgurtungsapparat","label":{"de":"Gurt-entgurtungsapparat","fr":"Appareil a garnir et a dégarnir"}}
-      ]
-    },
-    {
-      "key":"funk",
-      "label":{"de":"Funk","fr":"Radio"},
-      "subs":[
-        {"key":"se_235_tragbar_3x_akku_se_235_tragversion","label":{"de":"SE-235 tragbar: 3x Akku, SE-235, Tragversion","fr":"SE-235 portable: 3x accu, SE-235, cacolet"}},
-        {"key":"se_135_3x_akku_se_135_1x_b_ndel_lang_1x_b_ndel_kurz_1x_tasche_1x_antenne","label":{"de":"SE-135: 3x Akku, SE-135, 1x Bändel lang, 1x Bändel kurz, 1x Tasche, 1x Antenne","fr":"SE-135 portable: 3x accu, SE-135, 1x bretelle longue, 1x bretelle courte, 1x saccoche, 1x antenne"}},
-        {"key":"adressnetzplan_flt_bttr_blau","label":{"de":"Adressnetzplan Flt Bttr (blau)","fr":"Plan de reseaux Bttr DF (bleu)"}},
-        {"key":"adressnetzplan_ffz_bttr_weiss","label":{"de":"Adressnetzplan FFZ Bttr (weiss)","fr":"Plan de reseaux Bttr CCF (blanc)"}},
-        {"key":"fill_gun_se_x35","label":{"de":"Fill-Gun SE-X35","fr":"Fill-Gun SE-X35"}},
-        {"key":"lautsprecher_tragbar","label":{"de":"Lautsprecher tragbar","fr":"Haut-parleur portable"}},
-        {"key":"fernantenne_geroh_1x_antenne_1x_tasche_und_bobine","label":{"de":"Fernantenne \"GEROH\": 1x Antenne, 1x Tasche und Bobine","fr":"Antenne \"GEROH\": 1x antenne, 1x saccoche et bobine"}},
-        {"key":"fernantenne_t_inkl_1x_tasche","label":{"de":"Fernantenne \"t\" (inkl 1x Tasche)","fr":"Antenne \"t\" (inclus 1x saccoche)"}},
-        {"key":"feldtelefon_kiste_7_ftf_90_gabelstange_bobine_mit_fk80_bobine_leer_14x_aa_batterien","label":{"de":"Feldtelefon: Kiste à 7 Ftf 90, Gabelstange, Bobine mit FK80, Bobine leer, 14x AA Batterien","fr":"Téléphone de camp: caisse à 7 tc 90, perche à fourche, bobine avec cable 80, bobine vide, 14x batterie AA"}},
-        {"key":"messger_t_t_02","label":{"de":"Messgerät T-02","fr":"Appareil de mésure T-02"}},
-        {"key":"akkumulatorenladeger_t_algt_96","label":{"de":"Akkumulatorenladegerät (ALGT-96)","fr":"Chargeur d'accumulateur (ALGT-93)"}},
-        {"key":"fba_235_inkl_1_bobine_feldkabel_gabelstange_1x_bautasche","label":{"de":"FBA-235 (inkl 1 Bobine Feldkabel, Gabelstange, 1x Bautasche)","fr":"FBA-235 (inclus 1 bobine cable de campagne, perche à fourche, 1x saccoche de construction)"}},
-        {"key":"kabelverbindungszange","label":{"de":"Kabelverbindungszange","fr":"Pince à epissures"}},
-        {"key":"bautasche","label":{"de":"Bautasche","fr":"Saccoche de construction"}},
-        {"key":"linientasche","label":{"de":"Linientasche","fr":"Saccoche de ligne"}}
-      ]
-    },
-    {
-      "key":"sanit_tsdienst",
-      "label":{"de":"Sanitätsdienst","fr":"Service sanitaire"},
-      "subs":[
-        {"key":"sanit_tsbahre","label":{"de":"Sanitätsbahre","fr":"Brancard sanitaire"}},
-        {"key":"verbandsmaterial","label":{"de":"Verbandsmaterial","fr":"Materiel de pensement"}},
-        {"key":"hemostage_ausr_stung_1_kiste","label":{"de":"Hemostage Ausrüstung (1 Kiste)","fr":"Équipement hemostase (1 caisse)"}},
-        {"key":"wolldecke","label":{"de":"Wolldecke","fr":"Couverture de laine"}}
-      ]
-    },
-    {
-      "key":"abc",
-      "label":{"de":"ABC","fr":"NBC"},
-      "subs":[
-        {"key":"reinigungsmaterial_zu_sm90","label":{"de":"Reinigungsmaterial zu SM90","fr":"Materiel de nettoyage pour MP90"}},
-        {"key":"reinigungsmittel_1_flasche","label":{"de":"Reinigungsmittel (1 Flasche)","fr":"Liquide de nettoyage (1 bouteille)"}}
-      ]
-    },
-    {
-      "key":"allgemein",
-      "label":{"de":"Allgemein","fr":"Général"},
-      "subs":[
-        {"key":"schlaghammer_5kg","label":{"de":"Schlaghammer 5Kg","fr":"Masse 5Kg"}},
-        {"key":"locheisen","label":{"de":"Locheisen","fr":"Barre à mine"}},
-        {"key":"pickel","label":{"de":"Pickel","fr":"Pioche"}},
-        {"key":"schaufel","label":{"de":"Schaufel","fr":"Pelle"}},
-        {"key":"markierungsfahne_set_6","label":{"de":"Markierungsfahne (Set à 6)","fr":"Fanions de marquage (set de 6)"}},
-        {"key":"wassersack_inkl_innensack","label":{"de":"Wassersack (inkl Innensack)","fr":"Sac à eau (inclus sac intérieur)"}},
-        {"key":"tarnnetz_gr_sse_je_nach_verf_gbarkeit","label":{"de":"Tarnnetz (Grösse je nach Verfügbarkeit)","fr":"Filet de camouflage (taille selon disponibilité)"}},
-        {"key":"handschellen","label":{"de":"Handschellen","fr":"Menottes"}},
-        {"key":"beil","label":{"de":"Beil","fr":"Hache"}},
-        {"key":"nahkampsausr_stung_1x_sack_1x_kissen_1x_stock","label":{"de":"Nahkampsausrüstung (1x Sack, 1x Kissen, 1x Stock)","fr":"Moyens de contraine (1x saccoche, 1x coussin, 1x batôn)"}},
-        {"key":"ausschusszelt","label":{"de":"Ausschusszelt","fr":"Toile de rebut"}},
-        {"key":"sitometer","label":{"de":"Sitometer","fr":"Sitomètre"}},
-        {"key":"bussole","label":{"de":"Bussole","fr":"Boussole"}},
-        {"key":"kabelbinder","label":{"de":"Kabelbinder","fr":"Attaches jetables"}},
-        {"key":"trassierband_gr_n","label":{"de":"Trassierband grün","fr":"Bande de minage vert"}},
-        {"key":"trassierband_weiss","label":{"de":"Trassierband weiss","fr":"Bande de minage blanc"}},
-        {"key":"trassierband_rot_weiss","label":{"de":"Trassierband rot/weiss","fr":"Bande de minage rouge/blanc"}},
-        {"key":"mil_client_23","label":{"de":"MIL-CLIENT 23","fr":"MIL-CLIENT 23"}}
-      ]
-    },
-    {
-      "key":"beobachten",
-      "label":{"de":"Beobachten","fr":"Observer"},
-      "subs":[
-        {"key":"feldstecher","label":{"de":"Feldstecher","fr":"Jumelles"}},
-        {"key":"rlv_brille_in_kiste","label":{"de":"RLV Brille in Kiste","fr":"ILR lunettes dans caisse"}},
-        {"key":"rlv_3x","label":{"de":"RLV 3x","fr":"ILR 3x"}},
-        {"key":"rak_pistole_pistolet","label":{"de":"Rak-Pistole / Pistolet","fr":"Lancefusées"}}
-      ]
-    }
-  ];
+<div id="step1" class="card">
 
-  // ===== State =====
-  const state = {
-    language: "",
-    besteller: "",
-    zug: "",
-    bestelldatum: "",
-    abholung: "",
-    rueckgabe: "",
-    items: [],
-    consumables: ""
-  };
+<h2>1. Grunddaten</h2>
 
-  // ===== Helpers =====
-  function isWeekend(date){ const d=date.getDay(); return d===0 || d===6; }
-  function isMonday(date){ return date.getDay()===1; }
-  function isTuesday(date){ return date.getDay()===2; }
-  function pad(n){ return n<10 ? "0"+n : ""+n; }
-  function toLocalInputValue(date){
-    return date.getFullYear()+"-"+pad(date.getMonth()+1)+"-"+pad(date.getDate())+"T"+pad(date.getHours())+":"+pad(date.getMinutes());
-  }
-  function mondayOrderDeadline(mondayPickup){
-    const d = new Date(mondayPickup.getTime());
-    d.setDate(d.getDate()-4); // Donnerstag Vorwoche
-    d.setHours(17,0,0,0);
-    return d;
-  }
-  function formatDateTime(val){
-    if(!val) return "";
-    const d=new Date(val);
-    if(isNaN(d)) return val;
-    return d.toLocaleString("de-CH");
-  }
+<label>Sprache</label>
 
-  function getLang(){ return state.language || languageEl.value || "de"; }
+<select id="language">
+  <option value="">Bitte wählen</option>
+  <option value="Deutsch">Deutsch</option>
+  <option value="Français">Français</option>
+  <option value="Italiano">Italiano</option>
+</select>
 
-  function t(key){
-    const lang = getLang();
-    const dict = {
-      step2Title: {de:"2. Material", fr:"2. Matériel", it:"2. Materiale"},
-      step2Intro: {
-        de:"Wähle die benötigten Materialkategorien und gib die Menge an.",
-        fr:"Choisissez les catégories de matériel nécessaires et indiquez les quantités.",
-        it:"Scegli le categorie necessarie e inserisci le quantità."
-      },
-      step3Title: {de:"3. Zusammenfassung", fr:"3. Récapitulatif", it:"3. Riepilogo"},
-      consumablesTitle: {de:"Verbrauchsmaterial", fr:"Matériel consommable", it:"Materiale consumabile"},
-      consumablesHint: {
-        de:"Falls das Gewünschte nicht in den Listen ist, bitte hier aufführen (mit Menge).",
-        fr:"Si l'article n'est pas dans la liste, indiquez-le ici (avec quantité).",
-        it:"Se non è nella lista, indicarlo qui (con quantità)."
-      },
-      step1Missing: {
-        de:"Bitte Sprache, Besteller, Zug sowie Abholung und Rückgabe ausfüllen.",
-        fr:"Veuillez remplir la langue, le demandeur, la section, ainsi que retrait et retour.",
-        it:"Compila lingua, richiedente, sezione, ritiro e reso."
-      },
-      weekendRule: {
-        de:"Bestellung am Samstag/Sonntag ist nur mit Abholung am Dienstag erlaubt.",
-        fr:"Commande le samedi/dimanche uniquement avec retrait le mardi.",
-        it:"Ordini sabato/domenica solo con ritiro il martedì."
-      },
-      pickupWeekdayOnly: {
-        de:"Abholung/Rückgabe nur Mo–Fr.",
-        fr:"Retrait/Retour uniquement lun–ven.",
-        it:"Ritiro/Reso solo lun–ven."
-      },
-      pickupAfter25h: {
-        de:"Abholung mind. +25 h nach Bestelldatum.",
-        fr:"Retrait min. +25 h après la commande.",
-        it:"Ritiro min. +25 ore dopo l’ordine."
-      },
-      returnAfterPickup: {
-        de:"Rückgabe muss nach Abholung liegen.",
-        fr:"Le retour doit être après le retrait.",
-        it:"Il reso deve essere dopo il ritiro."
-      },
-      mondayDeadline: {
-        de:"Montag nur bestellbar bis Do 17:00 der Vorwoche.",
-        fr:"Lundi: commande jusqu'à jeudi 17:00 (semaine précédente).",
-        it:"Lunedì: ordine entro giovedì 17:00 (settimana precedente)."
-      },
-      step2Nothing: {
-        de:"Bitte mindestens eine Unterkategorie mit Menge auswählen ODER Verbrauchsmaterial ausfüllen.",
-        fr:"Veuillez sélectionner au moins une sous-catégorie avec quantité OU remplir le matériel consommable.",
-        it:"Seleziona almeno una sotto-categoria con quantità OPPURE compila il materiale consumabile."
-      },
-      sending: {de:"Bestellung wird versendet…", fr:"Envoi en cours…", it:"Invio in corso…"},
-      sentOk: {de:"Bestellung wurde erfolgreich versendet.", fr:"Commande envoyée avec succès.", it:"Ordine inviato con successo."},
-      sendFail: {
-        de:"Fehler beim Versenden. Bitte erneut versuchen oder den Fourier kontaktieren.",
-        fr:"Erreur lors de l'envoi. Veuillez réessayer ou contacter le fourrier.",
-        it:"Errore durante l’invio. Riprova o contatta il responsabile."
-      }
-    };
-    const v = dict[key];
-    return (v && v[lang]) ? v[lang] : (v && v["de"]) ? v["de"] : key;
-  }
+<label>Besteller</label>
 
-  function updateTextByLanguage(){
-    step2Title.textContent = t("step2Title");
-    step2Intro.textContent = t("step2Intro");
-    step3Title.textContent = t("step3Title");
-    consumablesTitle.textContent = t("consumablesTitle");
-    consumablesHint.textContent = t("consumablesHint");
-    // Placeholder leicht anpassen
-    if(getLang()==="fr") consumablesEl.placeholder = "ex.: colliers de serrage 10x, piles AA 6x ...";
-    else if(getLang()==="it") consumablesEl.placeholder = "es.: fascette 10x, pile AA 6x ...";
-    else consumablesEl.placeholder = "z.B. Kabelbinder 10x, Batterien AA 6x ...";
-  }
+<input type="text"
+       id="besteller">
 
-  function updateStepIndicator(step){
-    document.querySelectorAll(".step-dot").forEach((el,idx)=>{
-      if(idx<step) el.classList.add("active");
-      else el.classList.remove("active");
-    });
-  }
-  function goToStep(step){
-    step1.style.display = step===1 ? "block":"none";
-    step2.style.display = step===2 ? "block":"none";
-    step3.style.display = step===3 ? "block":"none";
-    updateStepIndicator(step);
-  }
+<label>Zug</label>
 
-  // ===== Init Defaults =====
-  function initDates(){
-    const now = new Date();
-    bestelldatumEl.value = toLocalInputValue(now);
+<select id="zug">
+  <option value="">Bitte wählen</option>
+  <option>C1</option>
+  <option>M113</option>
+  <option>KDO</option>
+  <option>UEM 1</option>
+  <option>UEM 2</option>
+  <option>WETTER</option>
+  <option>BM</option>
+</select>
 
-    // Default pickup/return
-    let pickup = new Date(now.getTime() + 26*3600*1000);
-    let ret = new Date(now.getTime() + 50*3600*1000);
+<label>Bestelldatum</label>
 
-    // pickup/return Mo–Fr
-    while(isWeekend(pickup)) pickup.setDate(pickup.getDate()+1);
-    while(isWeekend(ret)) ret.setDate(ret.getDate()+1);
+<input type="datetime-local"
+       id="bestelldatum"
+       readonly>
 
-    abholungEl.value = toLocalInputValue(pickup);
-    rueckgabeEl.value = toLocalInputValue(ret);
-  }
+<label>Abholung</label>
 
-  // ===== Step 1 Validation =====
-  function nextStep1(){
-    step1Error.textContent = "";
+<input type="datetime-local"
+       id="abholung">
 
-    const language = languageEl.value;
-    const best = bestellerEl.value.trim();
-    const zug = zugEl.value;
-    const aVal = abholungEl.value;
-    const rVal = rueckgabeEl.value;
+<label>Rückgabe</label>
 
-    if(!language || !best || !zug || !aVal || !rVal){
-      step1Error.textContent = t("step1Missing");
-      return;
-    }
+<input type="datetime-local"
+       id="rueckgabe">
 
-    const now = new Date();         // Bestelldatum = aktueller Zeitpunkt
-    const b = now;
-    const a = new Date(aVal);
-    const r = new Date(rVal);
+<div class="error"
+     id="step1Error"></div>
 
-    // pickup/return only weekdays
-    if(isWeekend(a) || isWeekend(r)){
-      step1Error.textContent = t("pickupWeekdayOnly");
-      return;
-    }
+<div class="button-row">
 
-    // weekend order rule: Sat/Sun allowed only if pickup Tuesday
-    if(isWeekend(b) && !isTuesday(a)){
-      step1Error.textContent = t("weekendRule");
-      return;
-    }
+<button class="primary"
+        onclick="nextStep1()">
+  Weiter
+</button>
 
-    // 25h rule
-    if(a - b < 25*3600*1000){
-      step1Error.textContent = t("pickupAfter25h");
-      return;
-    }
+</div>
 
-    if(r < a){
-      step1Error.textContent = t("returnAfterPickup");
-      return;
-    }
+</div>
 
-    // Monday pickup deadline (still applies)
-    if(isMonday(a)){
-      const deadline = mondayOrderDeadline(a);
-      if(b > deadline){
-        step1Error.textContent = t("mondayDeadline");
-        return;
-      }
-    }
+<!-- STEP 2 -->
 
-    // Save state
-    state.language = language;
-    state.besteller = best;
-    state.zug = zug;
-    state.bestelldatum = b.toISOString();
-    state.abholung = aVal;
-    state.rueckgabe = rVal;
+<div id="step2"
+     class="card"
+     style="display:none;">
 
-    // Show readonly order date
-    bestelldatumEl.value = toLocalInputValue(b);
+<h2>2. Material</h2>
 
-    updateTextByLanguage();
-    renderCategories();
-    goToStep(2);
-  }
+<div id="categoriesContainer"></div>
 
-  // ===== Categories Render =====
-  function renderCategories(){
-    const lang = getLang();
-    categoriesContainer.innerHTML = "";
+<div class="error"
+     id="step2Error"></div>
 
-    categories.forEach(cat=>{
-      const catName = (cat.label && cat.label[lang]) ? cat.label[lang] : (cat.label.de || cat.key);
-      const wrapper = document.createElement("div");
-      wrapper.className = "category";
-      wrapper.innerHTML = `
-        <div class="category-header" onclick="toggleCategory('${cat.key}')">
-          <div class="category-title">${escapeHtml(catName)}</div>
-        </div>
-        <div class="subcategories" id="subs-${cat.key}">
-          ${cat.subs.map(sub=>{
-            const name = (sub.label && sub.label[lang]) ? sub.label[lang] : (sub.label.de || sub.key);
-            return `
-              <div class="qty-row">
-                <span>${escapeHtml(name)}</span>
-                <input type="number" min="0" step="1" value="0" id="subQty-${cat.key}-${sub.key}">
-              </div>
-            `;
-          }).join("")}
-        </div>
-      `;
-      categoriesContainer.appendChild(wrapper);
-    });
-  }
+<div class="button-row">
 
-  function toggleCategory(key){
-    const el = document.getElementById("subs-"+key);
-    if(el) el.classList.toggle("open");
-  }
+<button class="secondary"
+        onclick="goToStep(1)">
+  Zurück
+</button>
 
-  function escapeHtml(str){
-    return (str ?? "").toString()
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;")
-      .replace(/'/g,"&#039;");
-  }
+<button class="primary"
+        onclick="nextStep2()">
+  Weiter
+</button>
 
-  // ===== Step 2 Collect =====
-  function nextStep2(){
-    step2Error.textContent = "";
+</div>
 
-    const items = [];
-    categories.forEach(cat=>{
-      const catItem = { key: cat.key, subs: [] };
-      cat.subs.forEach(sub=>{
-        const el = document.getElementById("subQty-"+cat.key+"-"+sub.key);
-        if(!el) return;
-        const q = parseInt(el.value,10) || 0;
-        if(q>0) catItem.subs.push({ key: sub.key, qty: q });
-      });
-      if(catItem.subs.length) items.push(catItem);
-    });
+</div>
 
-    const consumablesText = (consumablesEl.value || "").trim();
+<!-- STEP 3 -->
 
-    // Neu: erlaubt, wenn entweder Items ODER Verbrauchsmaterial gefüllt
-    if(!items.length && !consumablesText){
-      step2Error.textContent = t("step2Nothing");
-      return;
-    }
+<div id="step3"
+     class="card"
+     style="display:none;">
 
-    state.items = items;
-    state.consumables = consumablesText;
+<h2>3. Zusammenfassung</h2>
 
-    buildSummary();
-    goToStep(3);
-  }
+<div class="summary"
+     id="summaryContent"></div>
 
-  // ===== Labels =====
-  function resolveLabelLang(catKey, subKey, lang){
-    const cat = categories.find(c=>c.key===catKey);
-    if(!cat) return { cat: catKey, sub: subKey || "" };
-    const catName = (cat.label && cat.label[lang]) ? cat.label[lang] : (cat.label.de || catKey);
-    if(!subKey) return { cat: catName, sub: "" };
-    const sub = cat.subs.find(s=>s.key===subKey);
-    const subName = sub ? ((sub.label && sub.label[lang]) ? sub.label[lang] : (sub.label.de || subKey)) : subKey;
-    return { cat: catName, sub: subName };
-  }
+<div class="button-row">
 
-  // ===== Summary =====
-  function buildSummary(){
-    const lang = getLang();
-    let html = "";
-    html += `<p><strong>${lang==="fr"?"Demandeur":lang==="it"?"Richiedente":"Besteller"}:</strong> ${escapeHtml(state.besteller)}</p>`;
-    html += `<p><strong>${lang==="fr"?"Section":lang==="it"?"Sezione":"Zug"}:</strong> ${escapeHtml(state.zug)}</p>`;
-    html += `<p><strong>${lang==="fr"?"Langue":lang==="it"?"Lingua":"Sprache"}:</strong> ${lang==="fr"?"Français":lang==="it"?"Italiano":"Deutsch"}</p>`;
-    html += `<p><strong>${lang==="fr"?"Date de la demande":lang==="it"?"Data dell'ordine":"Bestelldatum"}:</strong> ${escapeHtml(formatDateTime(state.bestelldatum))}</p>`;
-    html += `<p><strong>${lang==="fr"?"Retrait":lang==="it"?"Ritiro":"Abholung"}:</strong> ${escapeHtml(formatDateTime(state.abholung))}</p>`;
-    html += `<p><strong>${lang==="fr"?"Retour":lang==="it"?"Reso":"Rückgabe"}:</strong> ${escapeHtml(formatDateTime(state.rueckgabe))}</p>`;
+<button class="secondary"
+        onclick="goToStep(2)">
+  Zurück
+</button>
 
-    // Material list (if any)
-    if(state.items && state.items.length){
-      html += `<h3>${lang==="fr"?"Matériel":lang==="it"?"Materiale":"Material"}</h3>`;
-      html += `<ul class="summary">`;
-      state.items.forEach(item=>{
-        const l = resolveLabelLang(item.key, null, lang);
-        html += `<li><strong>${escapeHtml(l.cat)}</strong><ul>`;
-        item.subs.forEach(sub=>{
-          const sl = resolveLabelLang(item.key, sub.key, lang);
-          html += `<li>${escapeHtml(sl.sub)}: ${sub.qty}</li>`;
-        });
-        html += `</ul></li>`;
-      });
-      html += `</ul>`;
-    }
+<button class="primary"
+        onclick="sendOrder()">
+  Senden
+</button>
 
-    // Consumables (if any)
-    if(state.consumables && state.consumables.trim()){
-      html += `<h3>${escapeHtml(t("consumablesTitle"))}</h3>`;
-      html += `<p style="white-space:pre-wrap;">${escapeHtml(state.consumables)}</p>`;
-    }
+</div>
 
-    summaryContent.innerHTML = html;
-    sendInfo.textContent = "";
-  }
+<div id="sendInfo"></div>
 
-  // ===== Mail Body (DE + FR + IT) =====
-  function buildMailBody(){
-    let body = "";
-    body += "Besteller / Demandeur / Richiedente: " + state.besteller + "\n";
-    body += "Zug / Section / Sezione: " + state.zug + "\n";
-    body += "Sprache in der App / Langue dans l'application / Lingua nell'app: " +
-      (state.language==="fr"?"Français":state.language==="it"?"Italiano":"Deutsch") + "\n";
-    body += "Bestelldatum / Date / Data: " + formatDateTime(state.bestelldatum) + "\n";
-    body += "Abholung / Retrait / Ritiro: " + formatDateTime(state.abholung) + "\n";
-    body += "Rückgabe / Retour / Reso: " + formatDateTime(state.rueckgabe) + "\n\n";
+</div>
 
-    // DE block
-    body += "Material (Deutsch):\n";
-    if(state.items && state.items.length){
-      state.items.forEach(item=>{
-        const lDe = resolveLabelLang(item.key, null, "de");
-        body += "- " + lDe.cat + "\n";
-        item.subs.forEach(sub=>{
-          const slDe = resolveLabelLang(item.key, sub.key, "de");
-          body += "   • " + slDe.sub + ": " + sub.qty + "\n";
-        });
-      });
-    } else {
-      body += "- (keine Kategorien gewählt)\n";
-    }
-    if(state.consumables && state.consumables.trim()){
-      body += "\nVerbrauchsmaterial:\n" + state.consumables + "\n";
-    }
+</div>
 
-    body += "\n------------------------------\n\n";
+</div>
 
-    // FR block
-    body += "Matériel (Français):\n";
-    if(state.items && state.items.length){
-      state.items.forEach(item=>{
-        const lFr = resolveLabelLang(item.key, null, "fr");
-        body += "- " + lFr.cat + "\n";
-        item.subs.forEach(sub=>{
-          const slFr = resolveLabelLang(item.key, sub.key, "fr");
-          body += "   • " + slFr.sub + ": " + sub.qty + "\n";
-        });
-      });
-    } else {
-      body += "- (aucune catégorie sélectionnée)\n";
-    }
-    if(state.consumables && state.consumables.trim()){
-      body += "\nMatériel consommable:\n" + state.consumables + "\n";
-    }
-
-    body += "\n------------------------------\n\n";
-
-    // IT block
-    body += "Materiale (Italiano):\n";
-    if(state.items && state.items.length){
-      state.items.forEach(item=>{
-        const lIt = resolveLabelLang(item.key, null, "it"); // fallback auf de
-        body += "- " + lIt.cat + "\n";
-        item.subs.forEach(sub=>{
-          const slIt = resolveLabelLang(item.key, sub.key, "it"); // fallback auf de
-          body += "   • " + slIt.sub + ": " + sub.qty + "\n";
-        });
-      });
-    } else {
-      body += "- (nessuna categoria selezionata)\n";
-    }
-    if(state.consumables && state.consumables.trim()){
-      body += "\nMateriale consumabile:\n" + state.consumables + "\n";
-    }
-
-    return body;
-  }
-
-  // ===== Send =====
-  function sendOrder(){
-    const lang = getLang();
-
-    const subjectPrefix =
-      (lang==="fr") ? "Commande de matériel " :
-      (lang==="it") ? "Ordine materiale " :
-      "Materialbestellung ";
-
-    const subject = subjectPrefix + (state.zug ? state.zug + " – " : "") + (state.besteller || "");
-
-    const bodyText = buildMailBody();
-
-    const templateParams = {
-      subject: subject,
-      message: bodyText,
-      besteller: state.besteller,
-      zug: state.zug,
-      sprache_app: (state.language==="fr"?"Français":state.language==="it"?"Italiano":"Deutsch")
-    };
-
-    sendInfo.style.color = "#555";
-    sendInfo.textContent = t("sending");
-
-    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-      .then(function(){
-        sendInfo.style.color = "#060";
-        sendInfo.textContent = t("sentOk");
-      })
-      .catch(function(err){
-        console.error("EmailJS error:", err);
-        sendInfo.style.color = "#c00";
-        sendInfo.textContent = t("sendFail");
-      });
-  }
-
-  // ===== DOM =====
-  const languageEl = document.getElementById("language");
-  const bestellerEl = document.getElementById("besteller");
-  const zugEl = document.getElementById("zug");
-  const bestelldatumEl = document.getElementById("bestelldatum");
-  const abholungEl = document.getElementById("abholung");
-  const rueckgabeEl = document.getElementById("rueckgabe");
-
-  const step1Error = document.getElementById("step1Error");
-  const step2Error = document.getElementById("step2Error");
-  const step2Title = document.getElementById("step2Title");
-  const step2Intro = document.getElementById("step2Intro");
-  const step3Title = document.getElementById("step3Title");
-  const summaryContent = document.getElementById("summaryContent");
-  const sendInfo = document.getElementById("sendInfo");
-
-  const step1 = document.getElementById("step1");
-  const step2 = document.getElementById("step2");
-  const step3 = document.getElementById("step3");
-
-  const categoriesContainer = document.getElementById("categories");
-  const consumablesTitle = document.getElementById("consumablesTitle");
-  const consumablesHint = document.getElementById("consumablesHint");
-  const consumablesEl = document.getElementById("consumables");
-
-  // language change updates labels immediately
-  languageEl.addEventListener("change", () => {
-    updateTextByLanguage();
-    // Wenn User schon auf Step2 ist, re-render damit Labels passen
-    if(step2.style.display === "block") renderCategories();
-  });
-</script>
 </body>
 </html>
