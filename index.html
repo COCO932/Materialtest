@@ -316,29 +316,32 @@
 
 <script>
   // ===== Passwort-Logik =====
-const PASSWORD = "Material2_2026!";
+<script>
+  // ===== Passwort-Logik =====
+  const PASSWORD = "Material2_2026!";
 
-function handleLogin(){
-  const pwInput = document.getElementById("pwInput");
-  const errorEl = document.getElementById("loginError");
+  function handleLogin(){
+    const pwInput = document.getElementById("pwInput");
+    const errorEl = document.getElementById("loginError");
 
-  errorEl.textContent = "";
+    errorEl.textContent = "";
 
-  const value = pwInput.value;
+    const value = pwInput.value;
 
-  if(!value){
-    errorEl.textContent = "Bitte Passwort eingeben.";
-    return;
+    if(!value){
+      errorEl.textContent = "Bitte Passwort eingeben.";
+      return;
+    }
+
+    if(value === PASSWORD){
+      document.getElementById("loginCard").style.display = "none";
+      document.getElementById("appCard").style.display = "block";
+      initDates();
+    } else {
+      errorEl.textContent = "Passwort falsch.";
+    }
   }
-
-  if(value === PASSWORD){
-    document.getElementById("loginCard").style.display = "none";
-    document.getElementById("appCard").style.display = "block";
-    initDates();
-  } else {
-    errorEl.textContent = "Passwort falsch.";
-  }
-}
+</script>
 
   // ===== Kategorien (de/fr – it fallback auf de) =====
   const categories = [
