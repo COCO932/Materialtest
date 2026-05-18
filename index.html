@@ -316,27 +316,31 @@
 
 <script>
   // ===== Passwort-Logik =====
-  const PASSWORD = "Material2_2026!";
+  const PASSWORD_HASH = "d8b1390eb24e12b5dac0cc98cc9fa5cbc12bfffb9e0659172a5a3296ef8f1f4e";
 
-  function handleLogin(){
+  async function sha256(str){
+    const enc = new TextEncoder().encode(str);
+    const buf = await crypto.subtle.digest("SHA-256", enc);
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+  }
+
+  async function handleLogin(){
     const pwInput = document.getElementById("pwInput");
     const errorEl = document.getElementById("loginError");
-
     errorEl.textContent = "";
-
     const value = pwInput.value;
-
-    if(!value){
-      errorEl.textContent = "Bitte Passwort eingeben.";
-      return;
-    }
-
-    if(value === PASSWORD){
-      document.getElementById("loginCard").style.display = "none";
-      document.getElementById("appCard").style.display = "block";
-      initDates();
-    } else {
-      errorEl.textContent = "Passwort falsch.";
+    if(!value){ errorEl.textContent = "Bitte Passwort eingeben."; return; }
+    try{
+      const hash = await sha256(value);
+      if(hash === PASSWORD_HASH){
+        document.getElementById("loginCard").style.display="none";
+        document.getElementById("appCard").style.display="block";
+        initDates();
+      } else {
+        errorEl.textContent = "Passwort falsch.";
+      }
+    } catch(e){
+      errorEl.textContent = "Browser unterstützt die Sicherheitsfunktion nicht.";
     }
   }
 
@@ -840,69 +844,40 @@
   }
 
   // ===== Send =====
-function sendOrder(){
-  const lang = getLang();
+  function sendOrder(){
+    const lang = getLang();
 
-  const subjectPrefix =
-    (lang==="fr") ? "Commande de matériel " :
-    (lang==="it") ? "Ordine materiale " :
-    "Materialbestellung ";
+    const subjectPrefix =
+      (lang==="fr") ? "Commande de matériel " :
+      (lang==="it") ? "Ordine materiale " :
+      "Materialbestellung ";
 
-  const subject =
-    subjectPrefix +
-    (state.zug ? state.zug + " – " : "") +
-    (state.besteller || "");
+    const subject = subjectPrefix + (state.zug ? state.zug + " – " : "") + (state.besteller || "");
 
-  const bodyText = buildMailBody();
+    const bodyText = buildMailBody();
 
-  const templateParams = {
+    const templateParams = {
+      subject: subject,
+      message: bodyText,
+      besteller: state.besteller,
+      zug: state.zug,
+      sprache_app: (state.language==="fr"?"Français":state.language==="it"?"Italiano":"Deutsch")
+    };
 
-    // WICHTIG
-    to_email: "flt.ffz.bttr@gmail.com",
+    sendInfo.style.color = "#555";
+    sendInfo.textContent = t("sending");
 
-    subject: subject,
-
-    message: bodyText,
-
-    besteller: state.besteller,
-
-    zug: state.zug,
-
-    sprache_app:
-      (state.language==="fr")
-      ? "Français"
-      : (state.language==="it")
-      ? "Italiano"
-      : "Deutsch"
-  };
-
-  sendInfo.style.color = "#555";
-  sendInfo.textContent = t("sending");
-
-  emailjs.send(
-    EMAILJS_SERVICE_ID,
-    EMAILJS_TEMPLATE_ID,
-    templateParams
-  )
-  .then(function(response){
-
-    console.log("EMAIL SUCCESS:", response);
-
-    sendInfo.style.color = "#060";
-    sendInfo.textContent = t("sentOk");
-
-  })
-  .catch(function(error){
-
-    console.error("EMAIL ERROR:", error);
-
-    sendInfo.style.color = "#c00";
-
-    sendInfo.textContent =
-      t("sendFail") +
-      "\n\nDetails siehe Browser-Konsole.";
-  });
-}
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+      .then(function(){
+        sendInfo.style.color = "#060";
+        sendInfo.textContent = t("sentOk");
+      })
+      .catch(function(err){
+        console.error("EmailJS error:", err);
+        sendInfo.style.color = "#c00";
+        sendInfo.textContent = t("sendFail");
+      });
+  }
 
   // ===== DOM =====
   const languageEl = document.getElementById("language");
